@@ -43,29 +43,39 @@
   </style>
 </head>
 <body>
-  <h2>Game Stats Input</h2>
-  <form id="stats-form">
-    <label for="opponent">Opponent:</label><br />
-    <input type="text" id="opponent" name="opponent" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
+  <div id="login-screen">
+    <h2>Login</h2>
+    <label for="username">Username:</label><br />
+    <input type="text" id="username" style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
+    <label for="password">Password:</label><br />
+    <input type="password" id="password" style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
+    <button id="login-button">Login</button>
+  </div>
+  <div id="app" style="display: none;">
+    <h2>Game Stats Input</h2>
+    <form id="stats-form">
+      <label for="opponent">Opponent:</label><br />
+      <input type="text" id="opponent" name="opponent" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
 
-    <label for="game-date">Game Date (DDMMYY):</label><br />
-    <input type="text" id="game-date" name="game-date" pattern="\d{6}" placeholder="e.g. 150525" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
-    <table>
-      <thead>
-        <tr>
-          <th>Stat</th>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-          <th>4</th>
-        </tr>
-      </thead>
-      <tbody id="stat-inputs">
-        <!-- JS will inject the rows here -->
-      </tbody>
-    </table>
-    <button type="submit">Download CSV</button>
-  </form>
+      <label for="game-date">Game Date (DDMMYY):</label><br />
+      <input type="text" id="game-date" name="game-date" pattern="\d{6}" placeholder="e.g. 150525" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
+      <table>
+        <thead>
+          <tr>
+            <th>Stat</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+        </thead>
+        <tbody id="stat-inputs">
+          <!-- JS will inject the rows here -->
+        </tbody>
+      </table>
+      <button type="submit">Download CSV</button>
+    </form>
+  </div>
 
   <script>
     const stats = ["3PM","3PA","2PM","2PA","FTM","FTA","OREB","DREB","AST","STL","BLK","TO","PF"];
@@ -104,6 +114,20 @@
       link.click();
       // You can integrate Google Drive upload here using Google Picker or Drive API
       document.body.removeChild(link);
+    });
+
+    // Login logic
+    const loginScreen = document.getElementById("login-screen");
+    const app = document.getElementById("app");
+    document.getElementById("login-button").addEventListener("click", function() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user === "mirah" && pass === "251012") {
+        loginScreen.style.display = "none";
+        app.style.display = "block";
+      } else {
+        alert("Invalid credentials");
+      }
     });
   </script>
 </body>
