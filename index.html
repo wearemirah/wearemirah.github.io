@@ -12,9 +12,6 @@
       --bg: #f7f7f7;
       --font: Arial, sans-serif;
     }
-    * {
-      box-sizing: border-box;
-    }
     body {
       font-family: var(--font);
       margin: 0;
@@ -23,7 +20,6 @@
     }
     h2 {
       text-align: center;
-      margin-top: 0;
     }
     label {
       font-weight: bold;
@@ -42,9 +38,8 @@
       width: 100%;
       border-collapse: collapse;
       background-color: white;
-      overflow-x: auto;
       display: block;
-      border-radius: 6px;
+      overflow-x: auto;
     }
     th, td {
       border: 1px solid var(--border);
@@ -73,9 +68,6 @@
       background-color: #ddd;
       color: #333;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     .btn:active {
       background-color: #bbb;
@@ -105,6 +97,7 @@
   </style>
 </head>
 <body>
+
   <div id="login-screen">
     <h2>Login</h2>
     <label for="username">Username:</label>
@@ -140,14 +133,11 @@
   </div>
 
   <script>
-    const stats = [
-      '3PM', '3PA', '2PM', '2PA', 'FTM', 'FTA',
-      'OREB', 'DREB', 'AST', 'STL', 'BLK', 'TO', 'PF'
-    ];
+    const stats = ['3PM', '3PA', '2PM', '2PA', 'FTM', 'FTA', 'OREB', 'DREB', 'AST', 'STL', 'BLK', 'TO', 'PF'];
 
     const tableBody = document.getElementById('statsTableBody');
 
-    const loadFromStorage = () => {
+    function loadFromStorage() {
       const data = JSON.parse(localStorage.getItem('milaniStats') || '{}');
       document.getElementById('opponent').value = data.opponent || '';
       document.getElementById('gamedate').value = data.gamedate || '';
@@ -157,9 +147,9 @@
           if (el && data[`${stat}-${q}`] != null) el.value = data[`${stat}-${q}`];
         }
       });
-    };
+    }
 
-    const saveToStorage = () => {
+    function saveToStorage() {
       const data = {
         opponent: document.getElementById('opponent').value,
         gamedate: document.getElementById('gamedate').value
@@ -171,7 +161,7 @@
         }
       });
       localStorage.setItem('milaniStats', JSON.stringify(data));
-    };
+    }
 
     stats.forEach(stat => {
       const row = document.createElement('tr');
@@ -245,20 +235,11 @@
       document.body.removeChild(link);
     }
 
-    async function doLogin() {
+    function doLogin() {
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      const encoder = new TextEncoder();
-      const data = encoder.encode(password);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      const validUser = username === 'mirah';
-      const validHash = hashHex === 'f23991cb29179c9f33ed10c8724f9f1f2a3ce1d582e6c77ae6d82c26b4e1e7fa'; // hash of '12qwaszx'
-
-      if (validUser && validHash) {
+      if (username === 'mirah' && password === '12qwaszx') {
         sessionStorage.setItem('loginTime', Date.now());
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
@@ -275,7 +256,6 @@
       document.getElementById('login-screen').style.display = 'block';
     }
 
-    // Restore session if within 30 minutes
     window.onload = () => {
       const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
       if (Date.now() - loginTime < 30 * 60 * 1000) {
@@ -285,7 +265,7 @@
       }
       loadFromStorage();
       setInterval(saveToStorage, 5000);
-    }
+    };
   </script>
 </body>
 </html>
