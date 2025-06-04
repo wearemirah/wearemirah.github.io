@@ -30,7 +30,7 @@
       display: block;
       margin-top: 10px;
     }
-    input[type="text"] {
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 8px;
       font-size: 16px;
@@ -80,7 +80,7 @@
     .btn:active {
       background-color: #bbb;
     }
-    button.download {
+    button.download, .login-btn {
       width: 100%;
       padding: 12px;
       font-size: 18px;
@@ -91,51 +91,53 @@
       cursor: pointer;
       margin-top: 20px;
     }
-    button.download:hover {
+    button.download:hover, .login-btn:hover {
       background-color: var(--primary-hover);
     }
+    #app { display: none; }
+    #login-screen { max-width: 400px; margin: auto; margin-top: 20vh; }
     @media (max-width: 600px) {
-      table {
-        font-size: 12px;
-      }
-      input[type="number"] {
-        width: 36px;
-        font-size: 14px;
-      }
-      .btn {
-        width: 24px;
-        height: 24px;
-        font-size: 16px;
-      }
-      button.download {
-        font-size: 16px;
-      }
+      table { font-size: 12px; }
+      input[type="number"] { width: 36px; font-size: 14px; }
+      .btn { width: 24px; height: 24px; font-size: 16px; }
+      button.download { font-size: 16px; }
     }
   </style>
 </head>
 <body>
-  <h2>Henrique Milani 2025</h2>
+  <div id="login-screen">
+    <h2>Login</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Username" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Password" />
+    <button class="login-btn" onclick="doLogin()">Login</button>
+  </div>
 
-  <label for="opponent">Opponent:</label>
-  <input type="text" id="opponent" placeholder="e.g. RECREIO" />
+  <div id="app">
+    <h2>Henrique Milani 2025</h2>
 
-  <label for="gamedate">Game Date (DDMMYY):</label>
-  <input type="text" id="gamedate" placeholder="e.g. 150525" />
+    <label for="opponent">Opponent:</label>
+    <input type="text" id="opponent" placeholder="e.g. RECREIO" />
 
-  <table>
-    <thead>
-      <tr>
-        <th>Stat</th>
-        <th>Q1</th>
-        <th>Q2</th>
-        <th>Q3</th>
-        <th>Q4</th>
-      </tr>
-    </thead>
-    <tbody id="statsTableBody"></tbody>
-  </table>
+    <label for="gamedate">Game Date (DDMMYY):</label>
+    <input type="text" id="gamedate" placeholder="e.g. 150525" />
 
-  <button class="download" onclick="downloadCSV()">Download CSV</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Stat</th>
+          <th>Q1</th>
+          <th>Q2</th>
+          <th>Q3</th>
+          <th>Q4</th>
+        </tr>
+      </thead>
+      <tbody id="statsTableBody"></tbody>
+    </table>
+
+    <button class="download" onclick="downloadCSV()">Download CSV</button>
+  </div>
 
   <script>
     const stats = [
@@ -243,8 +245,47 @@
       document.body.removeChild(link);
     }
 
-    loadFromStorage();
-    setInterval(saveToStorage, 5000);
+    async function doLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      const validUser = username === 'mirah';
+      const validHash = hashHex === 'f23991cb29179c9f33ed10c8724f9f1f2a3ce1d582e6c77ae6d82c26b4e1e7fa'; // hash of '12qwaszx'
+
+      if (validUser && validHash) {
+        sessionStorage.setItem('loginTime', Date.now());
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        setTimeout(logout, 30 * 60 * 1000); // 30 minutes
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+
+    function logout() {
+      alert('Session expired. You will be logged out.');
+      sessionStorage.removeItem('loginTime');
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'block';
+    }
+
+    // Restore session if within 30 minutes
+    window.onload = () => {
+      const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
+      if (Date.now() - loginTime < 30 * 60 * 1000) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        setTimeout(logout, 30 * 60 * 1000 - (Date.now() - loginTime));
+      }
+      loadFromStorage();
+      setInterval(saveToStorage, 5000);
+    }
   </script>
 </body>
 </html>
