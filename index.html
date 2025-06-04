@@ -8,6 +8,8 @@
     :root {
       --primary: lightblue;
       --primary-hover: #87CEFA;
+      --danger: #e74c3c;
+      --danger-hover: #c0392b;
       --border: #ccc;
       --bg: #f7f7f7;
     }
@@ -69,19 +71,36 @@
     .btn:active {
       background: #bbb;
     }
-    button.download, .login-btn {
-      width: 100%;
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button.download {
+      flex: 1;
       padding: 12px;
       font-size: 18px;
       background-color: var(--primary);
       color: white;
       border: none;
       border-radius: 6px;
-      margin-top: 20px;
       cursor: pointer;
     }
-    button:hover {
+    button.download:hover {
       background-color: var(--primary-hover);
+    }
+    button.clear {
+      flex: 1;
+      padding: 12px;
+      font-size: 18px;
+      background-color: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button.clear:hover {
+      background-color: var(--danger-hover);
     }
     #app { display: none; }
     #login-screen { max-width: 400px; margin: auto; margin-top: 20vh; }
@@ -120,7 +139,10 @@
       <tbody id="statsTableBody"></tbody>
     </table>
 
-    <button class="download" onclick="downloadCSV()">Download CSV</button>
+    <div class="button-row">
+      <button class="download" onclick="downloadCSV()">Download CSV</button>
+      <button class="clear" onclick="confirmClear()">Clear</button>
+    </div>
   </div>
 
   <script>
@@ -196,6 +218,23 @@
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    }
+
+    function confirmClear() {
+      if (confirm("Are you sure you want to clear all inputs?")) {
+        clearAll();
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('opponent').value = '';
+      document.getElementById('gamedate').value = '';
+      stats.forEach(stat => {
+        for (let q = 1; q <= 4; q++) {
+          document.getElementById(`${stat}-${q}`).value = 0;
+        }
+      });
+      localStorage.removeItem('milaniStats');
     }
 
     function doLogin() {
