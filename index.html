@@ -3,131 +3,155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MILANI STATS</title>
+  <title>Henrique Milani 2025</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 10px;
-      padding: 0;
+      padding: 10px;
+      margin: 0;
+      background-color: #f7f7f7;
     }
+
     h2 {
       text-align: center;
+      margin-top: 10px;
     }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 4px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 10px;
+      font-size: 14px;
+      background-color: white;
     }
+
     th, td {
+      border: 1px solid #ccc;
       padding: 4px;
       text-align: center;
     }
-    input[type="number"] {
-      width: 60px;
-      padding: 4px;
-      font-size: 16px;
+
+    .control {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 18px;
-      background-color: lightblue;
-      color: white;
+
+    .btn {
+      width: 24px;
+      height: 24px;
+      font-size: 16px;
+      line-height: 20px;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
+      background-color: #ddd;
+      color: #333;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #87CEFA; /* LightSkyBlue */
+
+    .btn:active {
+      background-color: #bbb;
+    }
+
+    .stat-name {
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div id="login-screen">
-    <h2>Login</h2>
-    <label for="username">Username:</label><br />
-    <input type="text" id="username" style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
-    <label for="password">Password:</label><br />
-    <input type="password" id="password" style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
-    <button id="login-button">Login</button>
-  </div>
-  <div id="app" style="display: none;">
-    <h2>Henrique Milani 2025</h2>
-    <form id="stats-form">
-      <label for="opponent">Opponent:</label><br />
-      <input type="text" id="opponent" name="opponent" placeholder="e.g. RECREIO" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
+  <h2>Henrique Milani 2025</h2>
 
-      <label for="game-date">Game Date (DDMMYY):</label><br />
-      <input type="text" id="game-date" name="game-date" pattern="\d{6}" placeholder="e.g. 150525" required style="width: 100%; margin-bottom: 10px; font-size: 16px;" /><br />
-      <table>
-        <thead>
-          <tr>
-            <th>Stat</th>
-            <th>Q1</th>
-            <th>Q2</th>
-            <th>Q3</th>
-            <th>Q4</th>
-          </tr>
-        </thead>
-        <tbody id="stat-inputs">
-          <!-- JS will inject the rows here -->
-        </tbody>
-      </table>
-      <button type="submit">Download CSV</button>
-    </form>
+  <label for="opponent">Opponent:</label>
+  <input type="text" id="opponent" placeholder="e.g. RECREIO" />
+
+  <label for="gamedate">Game Date (DDMMYY):</label>
+  <input type="text" id="gamedate" placeholder="e.g. 150525" />
+
+  <table>
+    <thead>
+      <tr>
+        <th>Stat</th>
+        <th>Q1</th>
+        <th>Q2</th>
+        <th>Q3</th>
+        <th>Q4</th>
+      </tr>
+    </thead>
+    <tbody id="statsTableBody"></tbody>
+  </table>
+
+  <div class="footer">
+    wearemirah.github.io
   </div>
 
   <script>
-    const stats = ["3PM","3PA","2PM","2PA","FTM","FTA","OREB","DREB","AST","STL","BLK","TO","PF"];
-    const tbody = document.getElementById("stat-inputs");
+    const stats = [
+      '3PM', '3PA', '2PM', '2PA', 'FTM', 'FTA',
+      'OREB', 'DREB', 'AST', 'STL', 'BLK', 'TO', 'PF'
+    ];
+
+    const tableBody = document.getElementById('statsTableBody');
 
     stats.forEach(stat => {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${stat}</td>` +
-        Array.from({ length: 4 }).map((_, i) =>
-          `<td><input type="number" name="${stat}-${i+1}" min="0" value="0" /></td>`
-        ).join('');
-      tbody.appendChild(row);
-    });
+      const row = document.createElement('tr');
+      const statCell = document.createElement('td');
+      statCell.className = 'stat-name';
+      statCell.textContent = stat;
+      row.appendChild(statCell);
 
-    document.getElementById("stats-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      let csv = "Name,1,2,3,4\n";
-      stats.forEach(stat => {
-        const row = [stat];
-        for (let i = 1; i <= 4; i++) {
-          const val = document.querySelector(`input[name="${stat}-${i}"]`).value || "0";
-          row.push(val);
-        }
-        csv += row.join(",") + "\n";
-      });
+      for (let q = 1; q <= 4; q++) {
+        const td = document.createElement('td');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'control';
 
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      const opponent = document.getElementById("opponent").value.trim().toUpperCase().replace(/\s+/g, '');
-      const date = document.getElementById("game-date").value.trim();
-      const filename = `${opponent}_${date}.csv`;
-      link.setAttribute("download", filename);
-      document.body.appendChild(link);
-      link.click();
-      // You can integrate Google Drive upload here using Google Picker or Drive API
-      document.body.removeChild(link);
-    });
+        const minusBtn = document.createElement('button');
+        minusBtn.className = 'btn';
+        minusBtn.textContent = '-';
 
-    // Login
-    const loginScreen = document.getElementById("login-screen");
-    const app = document.getElementById("app");
-    document.getElementById("login-button").addEventListener("click", function() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-      if (user === "mirah" && pass === "251012") {
-        loginScreen.style.display = "none";
-        app.style.display = "block";
-      } else {
-        alert("Invalid credentials");
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.min = 0;
+        input.value = 0;
+        input.style.width = '40px';
+        input.style.textAlign = 'center';
+
+        const plusBtn = document.createElement('button');
+        plusBtn.className = 'btn';
+        plusBtn.textContent = '+';
+
+        minusBtn.onclick = () => {
+          input.value = Math.max(0, parseInt(input.value) - 1);
+        };
+        plusBtn.onclick = () => {
+          input.value = parseInt(input.value) + 1;
+        };
+
+        wrapper.appendChild(minusBtn);
+        wrapper.appendChild(input);
+        wrapper.appendChild(plusBtn);
+        td.appendChild(wrapper);
+        row.appendChild(td);
       }
+
+      tableBody.appendChild(row);
     });
   </script>
 </body>
