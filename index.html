@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Henrique Milani 2025</title>
   <style>
     :root {
@@ -12,262 +12,1204 @@
       --danger-hover: #c0392b;
       --border: #ccc;
       --bg: #f7f7f7;
+      --header-bg: #e0e7ff;
+      --button-bg: #ddd;
+      --button-active-bg: #bbb;
     }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 10px;
       background-color: var(--bg);
+      user-select: none;
     }
     h2 {
       text-align: center;
+      margin: 10px 0;
     }
     label {
       font-weight: bold;
       display: block;
       margin-top: 10px;
     }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 8px;
+    input[type="text"], input[type="number"] {
       font-size: 16px;
-      margin-bottom: 10px;
+      padding: 4px 6px;
       border: 1px solid var(--border);
       border-radius: 4px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      display: block;
-      overflow-x: auto;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 6px;
+      width: 60px;
       text-align: center;
-      min-width: 60px;
+      margin-top: 4px;
     }
-    td:first-child, th:first-child {
-      position: sticky;
-      left: 0;
-      background: #fff;
-      z-index: 1;
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
-    .control {
+    .header-bar {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--header-bg);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+    .foul-capped {
+      color: var(--danger);
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+    .fouled-out-label {
+      color: var(--danger);
+      font-weight: bold;
+      margin-left: 8px;
+      font-size: 16px;
+      vertical-align: middle;
+    }
+    .header-left, .header-center, .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-left {
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .header-left label {
+      font-weight: normal;
+      margin: 0;
+      user-select: text;
+    }
+    .header-center {
+      flex-grow: 1;
       justify-content: center;
-      gap: 4px;
+      gap: 15px;
+      user-select: none;
     }
-    .btn {
-      width: 28px;
-      height: 28px;
-      font-size: 18px;
-      border: none;
-      background: #ddd;
+    select, input[type="number"].foul-counter {
+      font-size: 16px;
+      padding: 4px 6px;
       border-radius: 4px;
-      cursor: pointer;
+      border: 1px solid var(--border);
+      user-select: text;
     }
-    .btn:active {
-      background: #bbb;
+    .timer {
+      font-size: 20px;
+      font-weight: bold;
+      width: 80px;
+      text-align: center;
+      user-select: none;
+    }
+    .timer-controls button {
+      background: var(--button-bg);
+      border: none;
+      border-radius: 4px;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .timer-controls button:active {
+      background: var(--button-active-bg);
+    }
+    .header-right {
+      min-width: 120px;
+      justify-content: flex-end;
+      font-weight: bold;
+      font-size: 18px;
+      user-select: none;
+    }
+    .main-container {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    .section {
+      flex: 1;
+      background: white;
+      border-radius: 6px;
+      padding: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .section h3 {
+      margin: 0 0 12px 0;
+      user-select: text;
+    }
+    .buttons-grid {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      user-select: none;
+    }
+    .defense-buttons {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .offense-buttons {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: min-content;
+    }
+    .btn-block, .btn-steal, .btn-rebound, .btn-foul,
+    .btn-fg, .btn-ft, .btn-assist, .btn-turnover,
+    .btn-off-rebound, .btn-off-foul {
+      background: var(--button-bg);
+      border: none;
+      border-radius: 6px;
+      padding: 14px 0;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+    .btn-block:active, .btn-steal:active, .btn-rebound:active, .btn-foul:active,
+    .btn-fg:active, .btn-ft:active, .btn-assist:active, .btn-turnover:active,
+    .btn-off-rebound:active, .btn-off-foul:active {
+      background: var(--button-active-bg);
+    }
+    .counter-container {
+      margin-top: 6px;
+      text-align: center;
+      user-select: text;
+    }
+    .counter-container input[type="number"] {
+      width: 48px;
+      font-weight: bold;
+      cursor: text;
+      user-select: text;
+    }
+    .button-label {
+      user-select: text;
     }
     .button-row {
       display: flex;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 0;
+      justify-content: center;
+      user-select: none;
     }
-    button.download {
+    button.download, button.clear {
       flex: 1;
       padding: 12px;
       font-size: 18px;
-      background-color: var(--primary);
-      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      user-select: none;
+    }
+    button.download {
+      background-color: var(--primary);
+      color: white;
     }
     button.download:hover {
       background-color: var(--primary-hover);
     }
     button.clear {
-      flex: 1;
-      padding: 12px;
-      font-size: 18px;
       background-color: var(--danger);
       color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
     }
     button.clear:hover {
       background-color: var(--danger-hover);
     }
-    #app { display: none; }
-    #login-screen { max-width: 400px; margin: auto; margin-top: 20vh; }
+    #app { max-width: 900px; margin: auto; }
+    #login-screen {
+      max-width: 400px;
+      margin: auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+      max-width: 320px;
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 24px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    }
+    .login-form label {
+      margin-top: 0;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+    .login-form input[type="text"], .login-form input[type="password"] {
+      width: 100%;
+      font-size: 17px;
+      padding: 10px 12px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      margin-bottom: 0;
+      background: #f9fafd;
+      color: #222;
+      transition: border-color 0.2s;
+    }
+    .login-form input::placeholder {
+      color: #888;
+      opacity: 1;
+      font-style: italic;
+      font-size: 15px;
+    }
+    .login-form input.invalid {
+      border-color: var(--danger);
+      animation: shake 0.25s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+    .login-btn {
+      margin-top: 12px;
+      padding: 12px 0;
+      font-size: 17px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+    .login-btn:hover {
+      background: var(--primary-hover);
+    }
+    /* Offense/Defense horizontal layout for landscape tablets */
+    @media (min-width: 768px) and (orientation: landscape) {
+      .main-container {
+        flex-direction: row;
+        gap: 40px;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 32px;
+      }
+      .section {
+        padding: 28px 30px;
+        font-size: 1.13em;
+        min-width: 320px;
+        max-width: 450px;
+      }
+      .section h3 {
+        font-size: 1.35em;
+      }
+      .buttons-grid {
+        gap: 18px;
+      }
+      .btn-block, .btn-steal, .btn-rebound, .btn-foul,
+      .btn-fg, .btn-ft, .btn-assist, .btn-turnover,
+      .btn-off-rebound, .btn-off-foul {
+        font-size: 1.11em;
+        padding: 18px 0;
+      }
+      .counter-container input[type="number"] {
+        font-size: 19px;
+        padding: 8px 0;
+      }
+    }
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .modal {
+      background: white;
+      border-radius: 8px;
+      padding: 20px 24px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    .modal h4 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      user-select: text;
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .modal-buttons button {
+      flex: 1;
+      padding: 10px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      background-color: var(--primary);
+      color: white;
+      transition: background-color 0.2s ease;
+    }
+    .modal-buttons button:hover {
+      background-color: var(--primary-hover);
+    }
+    .modal-buttons button.cancel {
+      background-color: var(--danger);
+    }
+    .modal-buttons button.cancel:hover {
+      background-color: var(--danger-hover);
+    }
   </style>
 </head>
 <body>
 
   <div id="login-screen">
     <h2>Login</h2>
-    <label>Username:</label>
-    <input type="text" id="username" placeholder="Username" />
-    <label>Password:</label>
-    <input type="password" id="password" placeholder="Password" />
-    <button class="login-btn" onclick="doLogin()">Login</button>
-  </div>
-
-  <div id="app">
-    <h2>Henrique Milani 2025</h2>
-
-    <label for="opponent">Opponent:</label>
-    <input type="text" id="opponent" placeholder="e.g. RECREIO" />
-
-    <label for="gamedate">Game Date (DDMMYY):</label>
-    <input type="text" id="gamedate" placeholder="e.g. 150525" />
-
-    <table>
-      <thead>
-        <tr>
-          <th>Stat</th>
-          <th>Q1</th>
-          <th>Q2</th>
-          <th>Q3</th>
-          <th>Q4</th>
-        </tr>
-      </thead>
-      <tbody id="statsTableBody"></tbody>
-    </table>
-
-    <div class="button-row">
-      <button class="download" onclick="downloadCSV()">Download CSV</button>
-      <button class="clear" onclick="confirmClear()">Clear</button>
+    <div class="login-form" id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter username" autocomplete="username" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" />
+      <button class="login-btn" id="loginBtn" type="button" onclick="doLogin()">Login</button>
     </div>
   </div>
 
-  <script>
-    const stats = ['3PM','3PA','2PM','2PA','FTM','FTA','OREB','DREB','AST','STL','BLK','TO','PF'];
-    const tableBody = document.getElementById('statsTableBody');
+  <div id="app" style="display:none;">
+    <h2>Henrique Milani 2025</h2>
 
-    function renderTable() {
-      stats.forEach(stat => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${stat}</td>` + [1,2,3,4].map(q => {
-          return `
-          <td>
-            <div class="control">
-              <button class="btn" onclick="adjust('${stat}-${q}', -1)">-</button>
-              <input type="number" id="${stat}-${q}" min="0" value="0" onchange="saveData()" style="width:40px; text-align:center;" />
-              <button class="btn" onclick="adjust('${stat}-${q}', 1)">+</button>
+    <div class="header-bar" aria-label="Stats header bar">
+      <div class="header-left" aria-label="Foul counter">
+        <label for="foulCounter">Fouls:</label>
+        <span id="foulCounterWrapper" style="display: inline-flex; align-items: center;">
+          <input type="number" id="foulCounter" min="0" max="5" value="0" />
+          <span id="fouledOutLabel" class="fouled-out-label" style="display:none;">Fouled Out</span>
+        </span>
+      </div>
+      <div class="header-center" aria-label="Quarter selector and timer controls">
+        <select id="quarterSelect" aria-label="Select quarter">
+          <option value="1">Q1</option>
+          <option value="2">Q2</option>
+          <option value="3">Q3</option>
+          <option value="4">Q4</option>
+        </select>
+        <div class="timer" id="timerDisplay" aria-live="polite" aria-atomic="true" aria-label="Game timer">10:00</div>
+        <div class="timer-controls">
+          <button id="timerPlayPause" aria-label="Play timer">&#9658;</button>
+          <button id="timerReset" aria-label="Reset timer">&#8634;</button>
+        </div>
+      </div>
+      <div class="header-right" aria-label="Total points">
+        Total Points: <span id="totalPoints">0</span>
+      </div>
+    </div>
+
+    <div class="main-container" aria-label="Main stats container">
+      <div class="section" id="defenseSection" aria-label="Defense stats">
+        <h3>DEFENSE</h3>
+        <div class="buttons-grid defense-buttons">
+          <div>
+            <button class="btn-block" aria-label="Block button">BLOCK</button>
+            <div class="counter-container">
+              <input type="number" class="defense-counter" id="BLK-counter" min="0" value="0" aria-label="Block counter" />
             </div>
-          </td>`;
-        }).join('');
-        tableBody.appendChild(row);
-      });
-    }
+          </div>
+          <div>
+            <button class="btn-steal" aria-label="Steal button">STEAL</button>
+            <div class="counter-container">
+              <input type="number" class="defense-counter" id="STL-counter" min="0" value="0" aria-label="Steal counter" />
+            </div>
+          </div>
+          <div>
+            <button class="btn-rebound" aria-label="Rebound button">REBOUND</button>
+            <div class="counter-container">
+              <input type="number" class="defense-counter" id="DREB-counter" min="0" value="0" aria-label="Rebound counter" />
+            </div>
+          </div>
+          <div>
+            <button class="btn-foul" aria-label="Foul button">FOUL</button>
+            <div class="counter-container">
+              <input type="number" class="defense-counter" id="PF-counter" min="0" value="0" aria-label="Foul counter" />
+            </div>
+          </div>
+        </div>
+      </div>
 
-    function adjust(id, delta) {
-      const input = document.getElementById(id);
-      const val = Math.max(0, parseInt(input.value) + delta);
-      input.value = val;
-      saveData();
-    }
+      <div class="section" id="offenseSection" aria-label="Offense stats">
+        <h3>OFFENSE</h3>
+        <div class="buttons-grid offense-buttons" style="grid-template-columns: repeat(3, 1fr); grid-auto-rows: min-content;">
+          <div>
+            <button class="btn-fg" aria-label="Field Goal button">FG</button>
+          </div>
+          <div>
+            <button class="btn-ft" aria-label="Free Throw button">FT</button>
+          </div>
+        </div>
+        <!-- Divider between FG/FT and other offense buttons -->
+        <div class="offense-divider" style="width:90%; margin: 18px 0 12px 0; border-bottom: 2px solid #e0e0e0;"></div>
+        <div class="buttons-grid offense-buttons" style="grid-template-columns: repeat(3, 1fr); grid-auto-rows: min-content;">
+          <div>
+            <button class="btn-assist" aria-label="Assist button">ASSIST</button>
+            <div class="counter-container">
+              <input type="number" class="offense-counter" id="AST-counter" min="0" value="0" aria-label="Assist counter" />
+            </div>
+          </div>
+          <div>
+            <button class="btn-turnover" aria-label="Turnover button">TURNOVER</button>
+            <div class="counter-container">
+              <input type="number" class="offense-counter" id="TO-counter" min="0" value="0" aria-label="Turnover counter" />
+            </div>
+          </div>
+          <div>
+            <button class="btn-off-rebound" aria-label="Offensive Rebound button">REBOUND</button>
+            <div class="counter-container">
+              <input type="number" class="offense-counter" id="OREB-counter" min="0" value="0" aria-label="Offensive Rebound counter" />
+            </div>
+          </div>
+          <div>
+            <button class="btn-off-foul" aria-label="Offensive Foul button">FOUL</button>
+            <div class="counter-container">
+              <input type="number" class="offense-counter" id="PF-off-counter" min="0" value="0" aria-label="Offensive Foul counter" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    function saveData() {
-      const data = {
-        opponent: document.getElementById('opponent').value,
-        gamedate: document.getElementById('gamedate').value
-      };
-      stats.forEach(stat => {
-        for (let q = 1; q <= 4; q++) {
-          data[`${stat}-${q}`] = document.getElementById(`${stat}-${q}`).value;
-        }
-      });
-      localStorage.setItem('milaniStats', JSON.stringify(data));
-    }
+    <div class="button-row" aria-label="Action buttons">
+      <button class="download" onclick="downloadCSV()" aria-label="Download CSV">Download CSV</button>
+      <button class="clear" onclick="confirmClear()" aria-label="Clear all stats">Clear</button>
+    </div>
+  </div>
 
-    function loadData() {
-      const data = JSON.parse(localStorage.getItem('milaniStats') || '{}');
-      document.getElementById('opponent').value = data.opponent || '';
-      document.getElementById('gamedate').value = data.gamedate || '';
-      stats.forEach(stat => {
-        for (let q = 1; q <= 4; q++) {
-          const val = data[`${stat}-${q}`];
-          if (val != null) document.getElementById(`${stat}-${q}`).value = val;
-        }
-      });
-    }
+  <!-- Modals -->
+  <div id="modalOverlay" class="modal-overlay" style="display:none;">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <h4 id="modalTitle"></h4>
+      <div id="modalDesc" style="margin-bottom:16px;"></div>
+      <div class="modal-buttons" id="modalButtons"></div>
+    </div>
+  </div>
 
-    function downloadCSV() {
-      let csv = "Name,1,2,3,4\n";
-      stats.forEach(stat => {
-        let row = [stat];
-        for (let q = 1; q <= 4; q++) {
-          row.push(document.getElementById(`${stat}-${q}`).value || "0");
-        }
-        csv += row.join(",") + "\n";
-      });
-      const opponent = document.getElementById('opponent').value.trim().toUpperCase().replace(/\s+/g, '');
-      const date = document.getElementById('gamedate').value.trim();
-      const filename = `${opponent}_${date}.csv`;
+<script>
+  // Stats array and mapping to CSV rows
+  const stats = ['3PM','3PA','2PM','2PA','FTM','FTA','OREB','DREB','AST','STL','BLK','TO','PF'];
+  // Defensive counters map to stats:
+  // BLOCK -> BLK, STEAL -> STL, REBOUND (def) -> DREB, FOUL (def) -> PF
+  // Offensive counters map to stats:
+  // ASSIST -> AST, TURNOVER -> TO, REBOUND (off) -> OREB, FOUL (off) -> PF (same stat but tracked separately)
+  // FG and FT handled specially.
 
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+  // Data structure for stats per quarter: { stat: {q1: val, q2: val, q3: val, q4: val} }
+  let data = {};
+  stats.forEach(stat => {
+    data[stat] = {1:0,2:0,3:0,4:0};
+  });
 
-    function confirmClear() {
-      if (confirm("Are you sure you want to clear all inputs?")) {
-        clearAll();
+  // Offensive Fouls tracked separately but map to PF stat as well
+  // We'll keep a separate count for PF-off to show in UI, but add to PF stat in data.
+
+  // For FG tracking, we need to track 3PM, 3PA, 2PM, 2PA
+  // For FT tracking: FTM, FTA
+
+  // Elements references
+  const quarterSelect = document.getElementById('quarterSelect');
+  const foulCounter = document.getElementById('foulCounter');
+  const totalPointsLabel = document.getElementById('totalPoints');
+
+  // Defense counters inputs
+  const defenseCounters = {
+    BLK: document.getElementById('BLK-counter'),
+    STL: document.getElementById('STL-counter'),
+    DREB: document.getElementById('DREB-counter'),
+    PF: document.getElementById('PF-counter')
+  };
+  // Offense counters inputs
+  const offenseCounters = {
+    AST: document.getElementById('AST-counter'),
+    TO: document.getElementById('TO-counter'),
+    OREB: document.getElementById('OREB-counter'),
+    PFoff: document.getElementById('PF-off-counter')
+  };
+
+  // Buttons
+  const btnBlock = document.querySelector('.btn-block');
+  const btnSteal = document.querySelector('.btn-steal');
+  const btnDefRebound = document.querySelector('.btn-rebound');
+  const btnDefFoul = document.querySelector('.btn-foul');
+  const btnFG = document.querySelector('.btn-fg');
+  const btnFT = document.querySelector('.btn-ft');
+  const btnAssist = document.querySelector('.btn-assist');
+  const btnTurnover = document.querySelector('.btn-turnover');
+  const btnOffRebound = document.querySelector('.btn-off-rebound');
+  const btnOffFoul = document.querySelector('.btn-off-foul');
+
+  // Modal elements
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalButtons = document.getElementById('modalButtons');
+
+  // Timer variables
+  const timerDisplay = document.getElementById('timerDisplay');
+  const timerPlayPause = document.getElementById('timerPlayPause');
+  const timerReset = document.getElementById('timerReset');
+  let timerRunning = false;
+  let timerSeconds = 600; // 10 minutes
+  let timerInterval = null;
+
+  // Opponent and gamedate inputs (kept for CSV filename)
+  // We'll add these inputs hidden so user can still set them
+  let opponent = '';
+  let gamedate = '';
+
+  // Add hidden inputs for opponent and gamedate below header for CSV filename
+  const appDiv = document.getElementById('app');
+  const hiddenInputsContainer = document.createElement('div');
+  hiddenInputsContainer.style.marginBottom = '16px';
+  hiddenInputsContainer.style.display = 'flex';
+  hiddenInputsContainer.style.justifyContent = 'center';
+  hiddenInputsContainer.style.gap = '20px';
+  hiddenInputsContainer.style.flexWrap = 'wrap';
+
+  const opponentLabel = document.createElement('label');
+  opponentLabel.textContent = 'Opponent:';
+  opponentLabel.setAttribute('for','opponentInput');
+  opponentLabel.style.fontWeight = 'bold';
+  opponentLabel.style.userSelect = 'text';
+  const opponentInput = document.createElement('input');
+  opponentInput.type = 'text';
+  opponentInput.id = 'opponentInput';
+  opponentInput.placeholder = 'e.g. RECREIO';
+  opponentInput.style.fontSize = '16px';
+  opponentInput.style.padding = '4px 6px';
+  opponentInput.style.borderRadius = '4px';
+  opponentInput.style.border = '1px solid var(--border)';
+  opponentInput.style.width = '140px';
+  opponentInput.autocomplete = 'off';
+
+  const gamedateLabel = document.createElement('label');
+  gamedateLabel.textContent = 'Game Date (DDMMYY):';
+  gamedateLabel.setAttribute('for','gamedateInput');
+  gamedateLabel.style.fontWeight = 'bold';
+  gamedateLabel.style.userSelect = 'text';
+  const gamedateInput = document.createElement('input');
+  gamedateInput.type = 'text';
+  gamedateInput.id = 'gamedateInput';
+  gamedateInput.placeholder = 'e.g. 150525';
+  gamedateInput.style.fontSize = '16px';
+  gamedateInput.style.padding = '4px 6px';
+  gamedateInput.style.borderRadius = '4px';
+  gamedateInput.style.border = '1px solid var(--border)';
+  gamedateInput.style.width = '120px';
+  gamedateInput.autocomplete = 'off';
+
+  hiddenInputsContainer.appendChild(opponentLabel);
+  hiddenInputsContainer.appendChild(opponentInput);
+  hiddenInputsContainer.appendChild(gamedateLabel);
+  hiddenInputsContainer.appendChild(gamedateInput);
+  appDiv.insertBefore(hiddenInputsContainer, appDiv.children[1]);
+
+  // Initialize data from localStorage or zero
+  function initData() {
+    const storedData = localStorage.getItem('milaniStats');
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        stats.forEach(stat => {
+          for(let q=1; q<=4; q++) {
+            if(parsed[`${stat}-${q}`] !== undefined) {
+              data[stat][q] = parseInt(parsed[`${stat}-${q}`]) || 0;
+            } else {
+              data[stat][q] = 0;
+            }
+          }
+        });
+        opponentInput.value = parsed.opponent || '';
+        gamedateInput.value = parsed.gamedate || '';
+      } catch {
+        stats.forEach(stat => {
+          for(let q=1; q<=4; q++) data[stat][q] = 0;
+        });
       }
-    }
-
-    function clearAll() {
-      document.getElementById('opponent').value = '';
-      document.getElementById('gamedate').value = '';
+    } else {
       stats.forEach(stat => {
-        for (let q = 1; q <= 4; q++) {
-          document.getElementById(`${stat}-${q}`).value = 0;
-        }
+        for(let q=1; q<=4; q++) data[stat][q] = 0;
       });
-      localStorage.removeItem('milaniStats');
     }
+  }
 
-    function doLogin() {
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      if (user === 'mirah' && pass === '12qwaszx') {
-        sessionStorage.setItem('loginTime', Date.now());
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        setTimeout(logout, 30 * 60 * 1000);
-      } else {
-        alert('Invalid credentials');
-      }
-    }
-
-    function logout() {
-      sessionStorage.removeItem('loginTime');
-      document.getElementById('app').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'block';
-      alert('Session expired. Please log in again.');
-    }
-
-    window.onload = function () {
-      renderTable();
-      const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
-      if (Date.now() - loginTime < 30 * 60 * 1000) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        setTimeout(logout, 30 * 60 * 1000 - (Date.now() - loginTime));
-      }
-      loadData();
-      setInterval(saveData, 5000);
+  // Save data to localStorage
+  function saveData() {
+    const toSave = {
+      opponent: opponentInput.value.trim(),
+      gamedate: gamedateInput.value.trim()
     };
-  </script>
+    stats.forEach(stat => {
+      for(let q=1; q<=4; q++) {
+        toSave[`${stat}-${q}`] = data[stat][q];
+      }
+    });
+    localStorage.setItem('milaniStats', JSON.stringify(toSave));
+  }
+
+  // Update all counters in UI for selected quarter and foul counter
+  function updateUI() {
+    const q = parseInt(quarterSelect.value);
+    // Defense counters
+    defenseCounters.BLK.value = data.BLK[q];
+    defenseCounters.STL.value = data.STL[q];
+    defenseCounters.DREB.value = data.DREB[q];
+    defenseCounters.PF.value = data.PF[q] - (data.PFoff ? data.PFoff[q] || 0 : 0);
+    // Offense counters
+    offenseCounters.AST.value = data.AST[q];
+    offenseCounters.TO.value = data.TO[q];
+    offenseCounters.OREB.value = data.OREB[q];
+    offenseCounters.PFoff.value = data.PFoff ? (data.PFoff[q] || 0) : 0;
+    // Foul counter in header is sum of PF (def + off) for selected quarter
+    let foulTotal = (data.PF[q] || 0);
+    // Cap at 5 for UI
+    if (foulTotal > 5) foulTotal = 5;
+    foulCounter.value = foulTotal;
+    // Set color and label for fouled out
+    const fouledOutLabel = document.getElementById('fouledOutLabel');
+    if (foulTotal >= 5) {
+      foulCounter.classList.add('foul-capped');
+      fouledOutLabel.style.display = '';
+    } else {
+      foulCounter.classList.remove('foul-capped');
+      fouledOutLabel.style.display = 'none';
+    }
+    // Update total points label
+    totalPointsLabel.textContent = calculateTotalPoints();
+    saveData();
+  }
+
+  // Calculate total points from data (3PM*3 + 2PM*2 + FTM)
+  function calculateTotalPoints() {
+    let total = 0;
+    for(let q=1; q<=4; q++) {
+      total += (data['3PM'][q] || 0) * 3;
+      total += (data['2PM'][q] || 0) * 2;
+      total += (data['FTM'][q] || 0);
+    }
+    return total;
+  }
+
+  // Increment stat for current quarter by 1
+  function incrementStat(stat) {
+    const q = parseInt(quarterSelect.value);
+    data[stat][q] = (data[stat][q] || 0) + 1;
+    updateUI();
+  }
+
+  // Increment stat for current quarter by n
+  function incrementStatBy(stat, n=1) {
+    const q = parseInt(quarterSelect.value);
+    data[stat][q] = (data[stat][q] || 0) + n;
+    updateUI();
+  }
+
+  // Decrement stat for current quarter by 1 (min 0)
+  function decrementStat(stat) {
+    const q = parseInt(quarterSelect.value);
+    data[stat][q] = Math.max(0, (data[stat][q] || 0) - 1);
+    updateUI();
+  }
+
+  // Set stat for current quarter to val (used for counters)
+  function setStat(stat, val) {
+    const q = parseInt(quarterSelect.value);
+    data[stat][q] = Math.max(0, parseInt(val) || 0);
+    updateUI();
+  }
+
+  // Set PF (foul) for current quarter from foulCounter input (header)
+  function setPFfromFoulCounter() {
+    const q = parseInt(quarterSelect.value);
+    let val = Math.max(0, parseInt(foulCounter.value) || 0);
+    // Cap at 5 for UI and data
+    if (val > 5) val = 5;
+    // PF includes both defensive and offensive fouls, but we separate them in UI
+    // We'll keep defensive fouls as PF - PFoff
+    // So if PFoff data exists, we adjust PF defensive accordingly
+    let pfOffVal = 0;
+    if(data.PFoff) pfOffVal = data.PFoff[q] || 0;
+    data.PF[q] = val; // total PF = defensive + offensive fouls
+    updateUI();
+  }
+
+  // Set PF total for current quarter from defense and offense foul counters
+  function updatePFtotal() {
+    const q = parseInt(quarterSelect.value);
+    let defFouls = parseInt(defenseCounters.PF.value) || 0;
+    let offFouls = parseInt(offenseCounters.PFoff.value) || 0;
+    defFouls = Math.max(0, defFouls);
+    offFouls = Math.max(0, offFouls);
+    if(!data.PFoff) data.PFoff = {1:0,2:0,3:0,4:0};
+    data.PFoff[q] = offFouls;
+    data.PF[q] = defFouls + offFouls;
+    updateUI();
+  }
+
+  // Event handlers for defense buttons
+  btnBlock.addEventListener('click', () => {
+    incrementStat('BLK');
+  });
+  btnSteal.addEventListener('click', () => {
+    incrementStat('STL');
+  });
+  btnDefRebound.addEventListener('click', () => {
+    incrementStat('DREB');
+  });
+  btnDefFoul.addEventListener('click', () => {
+    incrementStat('PF');
+    updateUI();
+  });
+
+  // Event handlers for offense buttons with counters
+  btnAssist.addEventListener('click', () => {
+    incrementStat('AST');
+  });
+  btnTurnover.addEventListener('click', () => {
+    incrementStat('TO');
+  });
+  btnOffRebound.addEventListener('click', () => {
+    incrementStat('OREB');
+  });
+  btnOffFoul.addEventListener('click', () => {
+    const q = parseInt(quarterSelect.value);
+    if(!data.PFoff) data.PFoff = {1:0,2:0,3:0,4:0};
+    data.PFoff[q] = (data.PFoff[q] || 0) + 1;
+    data.PF[q] = (data.PF[q] || 0) + 1;
+    updateUI();
+  });
+
+  // Editable counters event handlers (defense)
+  Object.entries(defenseCounters).forEach(([stat, input]) => {
+    input.addEventListener('change', () => {
+      if(stat === 'PF') {
+        setStat('PF', input.value);
+        updatePFtotal();
+      } else {
+        setStat(stat, input.value);
+      }
+    });
+    input.addEventListener('input', () => {
+      if(stat === 'PF') {
+        setStat('PF', input.value);
+        updatePFtotal();
+      } else {
+        setStat(stat, input.value);
+      }
+    });
+  });
+  // Editable counters event handlers (offense)
+  Object.entries(offenseCounters).forEach(([stat, input]) => {
+    input.addEventListener('change', () => {
+      if(stat === 'PFoff') {
+        updatePFtotal();
+      } else {
+        setStat(stat.toUpperCase(), input.value);
+      }
+    });
+    input.addEventListener('input', () => {
+      if(stat === 'PFoff') {
+        updatePFtotal();
+      } else {
+        setStat(stat.toUpperCase(), input.value);
+      }
+    });
+  });
+
+  // Header foul counter event handlers
+  foulCounter.addEventListener('change', () => {
+    setPFfromFoulCounter();
+  });
+  foulCounter.addEventListener('input', () => {
+    setPFfromFoulCounter();
+  });
+
+  // Quarter change event
+  quarterSelect.addEventListener('change', () => {
+    updateUI();
+  });
+
+  // FG button click opens two modals in sequence: Made/Missed then 2pt/3pt
+  btnFG.addEventListener('click', () => {
+    let madeShot = null;
+    openModalMadeMissed()
+      .then(made => {
+        madeShot = made;
+        return openModalTwoThree();
+      })
+      .then(({pts}) => {
+        const q = parseInt(quarterSelect.value);
+        if (madeShot) {
+          if (pts === 3) {
+            data['3PM'][q] = (data['3PM'][q] || 0) + 1;
+            data['3PA'][q] = (data['3PA'][q] || 0) + 1;
+          } else {
+            data['2PM'][q] = (data['2PM'][q] || 0) + 1;
+            data['2PA'][q] = (data['2PA'][q] || 0) + 1;
+          }
+        } else {
+          if (pts === 3) {
+            data['3PA'][q] = (data['3PA'][q] || 0) + 1;
+          } else {
+            data['2PA'][q] = (data['2PA'][q] || 0) + 1;
+          }
+        }
+        updateUI();
+      })
+      .catch(() => {
+        // Modal cancelled, do nothing
+      });
+  });
+
+  // FT button click opens modal Made/Missed
+  btnFT.addEventListener('click', () => {
+    openModalMadeMissed(true)
+      .then(made => {
+        const q = parseInt(quarterSelect.value);
+        if (made) {
+          data['FTM'][q] = (data['FTM'][q] || 0) + 1;
+          data['FTA'][q] = (data['FTA'][q] || 0) + 1;
+        } else {
+          data['FTA'][q] = (data['FTA'][q] || 0) + 1;
+        }
+        updateUI();
+      })
+      .catch(() => {
+        // Modal cancelled, do nothing
+      });
+  });
+
+  // Modal helpers
+  // Returns Promise that resolves to true (made) or false (missed)
+  function openModalMadeMissed(isFT = false) {
+    return new Promise((resolve, reject) => {
+      modalTitle.textContent = isFT ? 'Free Throw' : 'Field Goal';
+      modalDesc.textContent = 'Select result:';
+      modalButtons.innerHTML = '';
+      const btnMade = document.createElement('button');
+      btnMade.textContent = 'Made';
+      btnMade.addEventListener('click', () => {
+        closeModal();
+        resolve(true);
+      });
+      const btnMissed = document.createElement('button');
+      btnMissed.textContent = 'Missed';
+      btnMissed.addEventListener('click', () => {
+        closeModal();
+        resolve(false);
+      });
+      modalButtons.appendChild(btnMade);
+      modalButtons.appendChild(btnMissed);
+      showModal();
+      // Add click outside modal to close and reject
+      modalOverlay.onclick = function(e) {
+        // Only if click is directly on overlay, not modal box
+        if (e.target === modalOverlay) {
+          closeModal();
+          reject();
+        }
+      };
+    });
+  }
+  // Returns Promise that resolves {pts: 2 or 3}
+  function openModalTwoThree() {
+    return new Promise((resolve, reject) => {
+      modalTitle.textContent = 'Shot Type';
+      modalDesc.textContent = 'Select points value:';
+      modalButtons.innerHTML = '';
+      const btn2pt = document.createElement('button');
+      btn2pt.textContent = '2pt';
+      btn2pt.addEventListener('click', () => {
+        closeModal();
+        resolve({pts: 2});
+      });
+      const btn3pt = document.createElement('button');
+      btn3pt.textContent = '3pt';
+      btn3pt.addEventListener('click', () => {
+        closeModal();
+        resolve({pts: 3});
+      });
+      modalButtons.appendChild(btn2pt);
+      modalButtons.appendChild(btn3pt);
+      showModal();
+      // Add click outside modal to close and reject
+      modalOverlay.onclick = function(e) {
+        if (e.target === modalOverlay) {
+          closeModal();
+          reject();
+        }
+      };
+    });
+  }
+  function showModal() {
+    modalOverlay.style.display = 'flex';
+  }
+  function closeModal() {
+    modalOverlay.style.display = 'none';
+    modalOverlay.onclick = null; // Remove click handler
+  }
+
+  // Clear all stats and counters
+  function clearAll() {
+    stats.forEach(stat => {
+      for (let q = 1; q <= 4; q++) {
+        data[stat][q] = 0;
+      }
+    });
+    if (data.PFoff) {
+      for (let q = 1; q <= 4; q++) data.PFoff[q] = 0;
+    }
+    opponentInput.value = '';
+    gamedateInput.value = '';
+    // Reset quarter dropdown to Q1
+    quarterSelect.value = "1";
+    updateUI();
+    saveData();
+    // Also reset timer
+    timerRunning = false;
+    timerSeconds = 600;
+    updateTimerDisplay();
+    timerPlayPause.textContent = '▶';
+  }
+
+  function confirmClear() {
+    if(confirm("Are you sure you want to clear all inputs?")) {
+      clearAll();
+    }
+  }
+
+  // Download CSV with same 13 rows and 4 columns format plus header
+  function downloadCSV() {
+    let csv = "Name,1,2,3,4\n";
+    stats.forEach(stat => {
+      let row = [stat];
+      for(let q=1; q<=4; q++) {
+        row.push(data[stat][q] || "0");
+      }
+      csv += row.join(",") + "\n";
+    });
+    const opponentVal = opponentInput.value.trim().toUpperCase().replace(/\s+/g, '');
+    const dateVal = gamedateInput.value.trim();
+    const filename = `${opponentVal}_${dateVal}.csv`;
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename || "stats.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Timer functions
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  }
+  function updateTimerDisplay() {
+    timerDisplay.textContent = formatTime(timerSeconds);
+  }
+  function timerTick() {
+    if(timerRunning && timerSeconds > 0) {
+      timerSeconds--;
+      updateTimerDisplay();
+      if(timerSeconds === 0) {
+        timerRunning = false;
+        timerPlayPause.textContent = '▶';
+        alert('Timer finished.');
+      }
+    }
+  }
+  timerPlayPause.addEventListener('click', () => {
+    if(timerRunning) {
+      timerRunning = false;
+      timerPlayPause.textContent = '▶';
+    } else {
+      timerRunning = true;
+      timerPlayPause.textContent = '⏸';
+    }
+  });
+  timerReset.addEventListener('click', () => {
+    timerRunning = false;
+    timerSeconds = 600;
+    updateTimerDisplay();
+    timerPlayPause.textContent = '▶';
+  });
+
+  // Opponent and gamedate inputs save on change
+  opponentInput.addEventListener('change', saveData);
+  gamedateInput.addEventListener('change', saveData);
+  opponentInput.addEventListener('input', saveData);
+  gamedateInput.addEventListener('input', saveData);
+
+  // Foul counter header input sync with PF total on quarter change
+  quarterSelect.addEventListener('change', () => {
+    updateUI();
+    // Reset timer whenever quarter is changed
+    timerRunning = false;
+    timerSeconds = 600;
+    updateTimerDisplay();
+    timerPlayPause.textContent = '▶';
+  });
+
+  // --- FG% and FT% percentage display ---
+  // Add FG% and FT% display elements below main-container if not already present
+  function ensurePercentageDisplays() {
+    if (!document.getElementById('fgPercentDisplay')) {
+      const fgDiv = document.createElement('div');
+      fgDiv.id = 'fgPercentDisplay';
+      fgDiv.style.fontWeight = 'bold';
+      fgDiv.style.marginTop = '8px';
+      fgDiv.style.textAlign = 'center';
+      fgDiv.textContent = '';
+      appDiv.appendChild(fgDiv);
+    }
+    if (!document.getElementById('ftPercentDisplay')) {
+      const ftDiv = document.createElement('div');
+      ftDiv.id = 'ftPercentDisplay';
+      ftDiv.style.fontWeight = 'bold';
+      ftDiv.style.marginTop = '4px';
+      ftDiv.style.textAlign = 'center';
+      ftDiv.textContent = '';
+      appDiv.appendChild(ftDiv);
+    }
+  }
+  // Update FG% and FT% displays
+  function updatePercentDisplays() {
+    const fgDiv = document.getElementById('fgPercentDisplay');
+    const ftDiv = document.getElementById('ftPercentDisplay');
+    let fgMade = 0, fgAtt = 0, ftMade = 0, ftAtt = 0;
+    for (let q = 1; q <= 4; q++) {
+      fgMade += (data['3PM'][q] || 0) + (data['2PM'][q] || 0);
+      fgAtt += (data['3PA'][q] || 0) + (data['2PA'][q] || 0);
+      ftMade += (data['FTM'][q] || 0);
+      ftAtt += (data['FTA'][q] || 0);
+    }
+    let fgPct = fgAtt > 0 ? Math.round((fgMade / fgAtt) * 100) : 0;
+    let ftPct = ftAtt > 0 ? Math.round((ftMade / ftAtt) * 100) : 0;
+    fgDiv.textContent = `FG: ${fgMade}/${fgAtt} (${fgAtt ? fgPct + '%' : '-'} )`;
+    ftDiv.textContent = `FT: ${ftMade}/${ftAtt} (${ftAtt ? ftPct + '%' : '-'} )`;
+    fgDiv.style.color = fgAtt > 0 && fgPct < 50 ? 'red' : '';
+    ftDiv.style.color = ftAtt > 0 && ftPct < 50 ? 'red' : '';
+  }
+  // Patch updateUI to also update FG% and FT%
+  const origUpdateUI = updateUI;
+  updateUI = function() {
+    origUpdateUI();
+    ensurePercentageDisplays();
+    updatePercentDisplays();
+  };
+
+  // Initialize app
+  function initApp() {
+    initData();
+    updateUI();
+    updateTimerDisplay();
+    // Timer interval
+    setInterval(timerTick, 1000);
+    ensurePercentageDisplays();
+    updatePercentDisplays();
+  }
+
+  // Enhanced Login logic
+  function doLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const userInput = document.getElementById('username');
+    const passInput = document.getElementById('password');
+    userInput.classList.remove('invalid');
+    passInput.classList.remove('invalid');
+    if (!username || !password) {
+      if (!username) userInput.classList.add('invalid');
+      if (!password) passInput.classList.add('invalid');
+      // Animate shake on form
+      const form = document.getElementById('loginForm');
+      form.classList.add('shake');
+      setTimeout(() => form.classList.remove('shake'), 300);
+      alert('Please enter both username and password.');
+      return false;
+    }
+    if (username === 'mirah' && password === '12qwaszx') {
+      sessionStorage.setItem('loginTime', Date.now().toString());
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      initApp();
+      if (window._logoutTimeout) clearTimeout(window._logoutTimeout);
+      window._logoutTimeout = setTimeout(logout, 30 * 60 * 1000);
+      return true;
+    } else {
+      const form = document.getElementById('loginForm');
+      form.classList.add('shake');
+      setTimeout(() => form.classList.remove('shake'), 300);
+      userInput.classList.add('invalid');
+      passInput.classList.add('invalid');
+      alert('Invalid credentials');
+      return false;
+    }
+  }
+  function logout() {
+    sessionStorage.removeItem('loginTime');
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    alert('Session expired. Please log in again.');
+  }
+
+  window.onload = () => {
+    const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0', 10);
+    if (Date.now() - loginTime < 30 * 60 * 1000) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      initApp();
+      if (window._logoutTimeout) clearTimeout(window._logoutTimeout);
+      window._logoutTimeout = setTimeout(logout, 30 * 60 * 1000 - (Date.now() - loginTime));
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app').style.display = 'none';
+    }
+    updateUI();
+    setInterval(saveData, 5000);
+  };
+</script>
+
 </body>
 </html>
+  // Login form Enter key handling
+  document.addEventListener('DOMContentLoaded', function() {
+    // Allow pressing Enter in either input to submit
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    if (usernameInput) {
+      usernameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          doLogin();
+        }
+      });
+    }
+    if (passwordInput) {
+      passwordInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          doLogin();
+        }
+      });
+    }
+  });
