@@ -1,1 +1,0 @@
-# wearemirah.github.io
