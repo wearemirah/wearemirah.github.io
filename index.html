@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Henrique Milani 2025</title>
+  <style>
+    :root {
+      --primary: lightblue;
+      --primary-hover: #87CEFA;
+      --danger: #e74c3c;
+      --danger-hover: #c0392b;
+      --border: #ccc;
+      --bg: #f7f7f7;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: var(--bg);
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 6px;
+      text-align: center;
+      min-width: 60px;
+    }
+    td:first-child, th:first-child {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 1;
+    }
+    .control {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+    .btn {
+      width: 28px;
+      height: 28px;
+      font-size: 18px;
+      border: none;
+      background: #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:active {
+      background: #bbb;
+    }
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button.download {
+      flex: 1;
+      padding: 12px;
+      font-size: 18px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button.download:hover {
+      background-color: var(--primary-hover);
+    }
+    button.clear {
+      flex: 1;
+      padding: 12px;
+      font-size: 18px;
+      background-color: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button.clear:hover {
+      background-color: var(--danger-hover);
+    }
+    #app { display: none; }
+    #login-screen { max-width: 400px; margin: auto; margin-top: 20vh; }
+  </style>
+</head>
+<body>
+
+  <div id="login-screen">
+    <h2>Login</h2>
+    <label>Username:</label>
+    <input type="text" id="username" placeholder="Username" />
+    <label>Password:</label>
+    <input type="password" id="password" placeholder="Password" />
+    <button class="login-btn" onclick="doLogin()">Login</button>
+  </div>
+
+  <div id="app">
+    <h2>Henrique Milani 2025</h2>
+
+    <label for="opponent">Opponent:</label>
+    <input type="text" id="opponent" placeholder="e.g. RECREIO" />
+
+    <label for="gamedate">Game Date (DDMMYY):</label>
+    <input type="text" id="gamedate" placeholder="e.g. 150525" />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Stat</th>
+          <th>Q1</th>
+          <th>Q2</th>
+          <th>Q3</th>
+          <th>Q4</th>
+        </tr>
+      </thead>
+      <tbody id="statsTableBody"></tbody>
+    </table>
+
+    <div class="button-row">
+      <button class="download" onclick="downloadCSV()">Download CSV</button>
+      <button class="clear" onclick="confirmClear()">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    const stats = ['3PM','3PA','2PM','2PA','FTM','FTA','OREB','DREB','AST','STL','BLK','TO','PF'];
+    const tableBody = document.getElementById('statsTableBody');
+
+    function renderTable() {
+      stats.forEach(stat => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${stat}</td>` + [1,2,3,4].map(q => {
+          return `
+          <td>
+            <div class="control">
+              <button class="btn" onclick="adjust('${stat}-${q}', -1)">-</button>
+              <input type="number" id="${stat}-${q}" min="0" value="0" onchange="saveData()" style="width:40px; text-align:center;" />
+              <button class="btn" onclick="adjust('${stat}-${q}', 1)">+</button>
+            </div>
+          </td>`;
+        }).join('');
+        tableBody.appendChild(row);
+      });
+    }
+
+    function adjust(id, delta) {
+      const input = document.getElementById(id);
+      const val = Math.max(0, parseInt(input.value) + delta);
+      input.value = val;
+      saveData();
+    }
+
+    function saveData() {
+      const data = {
+        opponent: document.getElementById('opponent').value,
+        gamedate: document.getElementById('gamedate').value
+      };
+      stats.forEach(stat => {
+        for (let q = 1; q <= 4; q++) {
+          data[`${stat}-${q}`] = document.getElementById(`${stat}-${q}`).value;
+        }
+      });
+      localStorage.setItem('milaniStats', JSON.stringify(data));
+    }
+
+    function loadData() {
+      const data = JSON.parse(localStorage.getItem('milaniStats') || '{}');
+      document.getElementById('opponent').value = data.opponent || '';
+      document.getElementById('gamedate').value = data.gamedate || '';
+      stats.forEach(stat => {
+        for (let q = 1; q <= 4; q++) {
+          const val = data[`${stat}-${q}`];
+          if (val != null) document.getElementById(`${stat}-${q}`).value = val;
+        }
+      });
+    }
+
+    function downloadCSV() {
+      let csv = "Name,1,2,3,4\n";
+      stats.forEach(stat => {
+        let row = [stat];
+        for (let q = 1; q <= 4; q++) {
+          row.push(document.getElementById(`${stat}-${q}`).value || "0");
+        }
+        csv += row.join(",") + "\n";
+      });
+      const opponent = document.getElementById('opponent').value.trim().toUpperCase().replace(/\s+/g, '');
+      const date = document.getElementById('gamedate').value.trim();
+      const filename = `${opponent}_${date}.csv`;
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function confirmClear() {
+      if (confirm("Are you sure you want to clear all inputs?")) {
+        clearAll();
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('opponent').value = '';
+      document.getElementById('gamedate').value = '';
+      stats.forEach(stat => {
+        for (let q = 1; q <= 4; q++) {
+          document.getElementById(`${stat}-${q}`).value = 0;
+        }
+      });
+      localStorage.removeItem('milaniStats');
+    }
+
+    function doLogin() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      if (user === 'mirah' && pass === '12qwaszx') {
+        sessionStorage.setItem('loginTime', Date.now());
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        setTimeout(logout, 30 * 60 * 1000);
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('loginTime');
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'block';
+      alert('Session expired. Please log in again.');
+    }
+
+    window.onload = function () {
+      renderTable();
+      const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
+      if (Date.now() - loginTime < 30 * 60 * 1000) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        setTimeout(logout, 30 * 60 * 1000 - (Date.now() - loginTime));
+      }
+      loadData();
+      setInterval(saveData, 5000);
+    };
+  </script>
+</body>
+</html>
