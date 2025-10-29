@@ -107,7 +107,11 @@ Located in the [img/](img/) directory:
 2. Ensure corresponding logo files exist in the `img/` directory
 3. Refresh the browser to apply changes
 
-Images have `onerror` handlers to hide if loading fails
+**Important Notes:**
+
+- The `.teams` file is listed in [.gitignore](.gitignore) to prevent accidentally committing team configurations
+- This allows each environment/broadcast to have its own team setup without affecting the repository
+- Images have `onerror` handlers to hide if loading fails
 
 ## Modifying the Scoreboard
 
@@ -141,3 +145,11 @@ Change the initial value in [script.js](script.js:2) (600 seconds = 10 minutes) 
 - Grid-based control layout for consistent button positioning
 - Scores and team names are contenteditable for quick manual adjustments
 - Timer uses `setInterval` with 1-second updates
+
+## Git Configuration
+
+The [.gitignore](.gitignore) file excludes:
+
+- `.teams` - Team configuration file (allows per-environment customization without committing)
+
+This ensures that team configurations remain local to each broadcast environment and don't conflict when pulling updates from the repository.
