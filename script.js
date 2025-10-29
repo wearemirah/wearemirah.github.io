@@ -2,17 +2,10 @@ let timerInterval = null;
 let timeRemaining = 600; // 10 minutes in seconds
 let isRunning = false;
 
-// Load team configuration from .teams file (or .teams.example fallback)
+// Load team configuration from .teams file
 async function loadTeamConfig() {
   try {
-    // Try .teams first (for local customization)
-    let response = await fetch('.teams');
-
-    // If .teams doesn't exist (404), fall back to .teams.example
-    if (!response.ok) {
-      response = await fetch('.teams.example');
-    }
-
+    const response = await fetch('.teams');
     const text = await response.text();
 
     // Parse .env-style format

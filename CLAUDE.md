@@ -98,9 +98,7 @@ AWAY_TEAM=bira
 
 **How It Works:**
 
-- On page load, [script.js](script.js:6-68) fetches and parses the configuration file
-- First tries to load `.teams` (for local customization)
-- If `.teams` doesn't exist, falls back to `.teams.example` (for GitHub Pages)
+- On page load, [script.js](script.js:6-68) fetches and parses the `.teams` file
 - If `SHOW_LOGO=yes`:
   - Team logos are loaded from `./img/{team_name}.png` (e.g., `./img/gnu.png`)
   - Team names are displayed in uppercase (e.g., "gnu" becomes "GNU")
@@ -108,6 +106,7 @@ AWAY_TEAM=bira
   - Both logo containers are hidden with `display: none`
   - HOME_TEAM and AWAY_TEAM parameters are ignored
 - Supports comments (lines starting with `#`) and ignores empty lines
+- Falls back to default values if the file cannot be loaded
 
 **Available Team Logos:**
 
@@ -117,24 +116,13 @@ Located in the [img/](img/) directory:
 
 **To Change Teams:**
 
-**Local Development:**
-
 1. Edit the [.teams](.teams) file with the desired team names
 2. Ensure corresponding logo files exist in the `img/` directory
 3. Refresh the browser to apply changes
-
-**GitHub Pages Deployment:**
-
-1. Edit the [.teams.example](.teams.example) file with the desired team names
-2. Commit and push the changes to the repository
-3. GitHub Pages will use `.teams.example` automatically
+4. Commit and push to deploy to GitHub Pages
 
 **Important Notes:**
 
-- The `.teams` file is listed in [.gitignore](.gitignore) to prevent accidentally committing local team configurations
-- This allows each environment/broadcast to have its own team setup without affecting the repository
-- GitHub Pages uses `.teams.example` since `.teams` is not committed
-- The application tries `.teams` first, then falls back to `.teams.example` if not found
 - Images have `onerror` handlers to hide if loading fails
 
 ## Modifying the Scoreboard
@@ -169,11 +157,3 @@ Change the initial value in [script.js](script.js:2) (600 seconds = 10 minutes) 
 - Grid-based control layout for consistent button positioning
 - Scores and team names are contenteditable for quick manual adjustments
 - Timer uses `setInterval` with 1-second updates
-
-## Git Configuration
-
-The [.gitignore](.gitignore) file excludes:
-
-- `.teams` - Team configuration file (allows per-environment customization without committing)
-
-This ensures that team configurations remain local to each broadcast environment and don't conflict when pulling updates from the repository.
