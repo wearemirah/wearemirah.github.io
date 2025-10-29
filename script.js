@@ -20,29 +20,45 @@ async function loadTeamConfig() {
       }
     });
 
-    // Set home team
-    if (config.HOME_TEAM) {
-      const homeTeam = config.HOME_TEAM;
-      const homeImg = document.querySelector('#homePicture img');
-      const homeName = document.querySelector('.team-left .team-name');
+    // Check if logos should be shown
+    const showLogos = config.SHOW_LOGO !== 'no';
 
-      if (homeImg && homeName) {
-        homeImg.style.display = 'block';
-        homeImg.src = `./img/${homeTeam}.png`;
-        homeName.textContent = homeTeam.toUpperCase();
+    const homeLogoDiv = document.querySelector('#homePicture');
+    const awayLogoDiv = document.querySelector('#awayPicture');
+
+    if (!showLogos) {
+      // Hide both logo containers
+      if (homeLogoDiv) homeLogoDiv.style.display = 'none';
+      if (awayLogoDiv) awayLogoDiv.style.display = 'none';
+    } else {
+      // Show logos and set team images/names
+      if (homeLogoDiv) homeLogoDiv.style.display = 'flex';
+      if (awayLogoDiv) awayLogoDiv.style.display = 'flex';
+
+      // Set home team
+      if (config.HOME_TEAM) {
+        const homeTeam = config.HOME_TEAM;
+        const homeImg = document.querySelector('#homePicture img');
+        const homeName = document.querySelector('.team-left .team-name');
+
+        if (homeImg && homeName) {
+          homeImg.style.display = 'block';
+          homeImg.src = `./img/${homeTeam}.png`;
+          homeName.textContent = homeTeam.toUpperCase();
+        }
       }
-    }
 
-    // Set away team
-    if (config.AWAY_TEAM) {
-      const awayTeam = config.AWAY_TEAM;
-      const awayImg = document.querySelector('#awayPicture img');
-      const awayName = document.querySelector('.team-right .team-name');
+      // Set away team
+      if (config.AWAY_TEAM) {
+        const awayTeam = config.AWAY_TEAM;
+        const awayImg = document.querySelector('#awayPicture img');
+        const awayName = document.querySelector('.team-right .team-name');
 
-      if (awayImg && awayName) {
-        awayImg.style.display = 'block';
-        awayImg.src = `./img/${awayTeam}.png`;
-        awayName.textContent = awayTeam.toUpperCase();
+        if (awayImg && awayName) {
+          awayImg.style.display = 'block';
+          awayImg.src = `./img/${awayTeam}.png`;
+          awayName.textContent = awayTeam.toUpperCase();
+        }
       }
     }
   } catch (error) {

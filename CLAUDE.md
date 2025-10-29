@@ -83,15 +83,28 @@ The application uses a [.teams](.teams) configuration file to dynamically load t
 **Configuration File Format:**
 
 ```env
+SHOW_LOGO=yes
 HOME_TEAM=gnu
 AWAY_TEAM=bira
 ```
 
+**Configuration Variables:**
+
+- `SHOW_LOGO` - Controls logo visibility:
+  - `yes` - Shows team logos and loads images from `./img/` directory
+  - `no` - Hides both logo containers completely (ignores HOME_TEAM and AWAY_TEAM)
+- `HOME_TEAM` - Name of the home team (used for logo filename and display name)
+- `AWAY_TEAM` - Name of the away team (used for logo filename and display name)
+
 **How It Works:**
 
-- On page load, [script.js](script.js:6-49) fetches and parses the `.teams` file
-- Team logos are loaded from `./img/{team_name}.png` (e.g., `./img/gnu.png`)
-- Team names are displayed in uppercase (e.g., "gnu" becomes "GNU")
+- On page load, [script.js](script.js:6-68) fetches and parses the `.teams` file
+- If `SHOW_LOGO=yes`:
+  - Team logos are loaded from `./img/{team_name}.png` (e.g., `./img/gnu.png`)
+  - Team names are displayed in uppercase (e.g., "gnu" becomes "GNU")
+- If `SHOW_LOGO=no`:
+  - Both logo containers are hidden with `display: none`
+  - HOME_TEAM and AWAY_TEAM parameters are ignored
 - Supports comments (lines starting with `#`) and ignores empty lines
 - Falls back to default values if the file cannot be loaded
 
