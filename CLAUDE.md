@@ -78,7 +78,7 @@ The application is split into three files:
 
 ### Team Configuration System
 
-The application uses a [.teams](.teams) configuration file to dynamically load team logos and names:
+The application uses a [parameters.txt](parameters.txt) configuration file to dynamically load team logos and names:
 
 **Configuration File Format:**
 
@@ -98,7 +98,7 @@ AWAY_TEAM=bira
 
 **How It Works:**
 
-- On page load, [script.js](script.js:6-68) fetches and parses the `.teams` file
+- On page load, [script.js](script.js:6-68) fetches and parses the `parameters.txt` file
 - If `SHOW_LOGO=yes`:
   - Team logos are loaded from `./img/{team_name}.png` (e.g., `./img/gnu.png`)
   - Team names are displayed in uppercase (e.g., "gnu" becomes "GNU")
@@ -116,7 +116,7 @@ Located in the [img/](img/) directory:
 
 **To Change Teams:**
 
-1. Edit the [.teams](.teams) file with the desired team names
+1. Edit the [parameters.txt](parameters.txt) file with the desired team names
 2. Ensure corresponding logo files exist in the `img/` directory
 3. Refresh the browser to apply changes
 4. Commit and push to deploy to GitHub Pages
@@ -128,7 +128,7 @@ Located in the [img/](img/) directory:
 ## Modifying the Scoreboard
 
 **Changing Teams (Recommended Method):**
-Edit the [.teams](.teams) file with the desired team names, then refresh the browser. The logos and names will update automatically.
+Edit the [parameters.txt](parameters.txt) file with the desired team names, then refresh the browser. The logos and names will update automatically.
 
 **Manual Override (During Broadcast):**
 Team names are contenteditable and can be modified directly in the browser without changing files

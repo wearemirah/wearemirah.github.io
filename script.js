@@ -2,10 +2,10 @@ let timerInterval = null;
 let timeRemaining = 600; // 10 minutes in seconds
 let isRunning = false;
 
-// Load team configuration from .teams file
+// Load team configuration from parameters.txt file
 async function loadTeamConfig() {
   try {
-    const response = await fetch('.teams');
+    const response = await fetch('parameters.txt');
     const text = await response.text();
 
     // Parse .env-style format
