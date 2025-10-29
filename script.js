@@ -26,8 +26,11 @@ async function loadTeamConfig() {
       const homeImg = document.querySelector('#homePicture img');
       const homeName = document.querySelector('.team-left .team-name');
 
-      homeImg.src = `./img/${homeTeam}.png`;
-      homeName.textContent = homeTeam.toUpperCase();
+      if (homeImg && homeName) {
+        homeImg.style.display = 'block';
+        homeImg.src = `./img/${homeTeam}.png`;
+        homeName.textContent = homeTeam.toUpperCase();
+      }
     }
 
     // Set away team
@@ -36,8 +39,11 @@ async function loadTeamConfig() {
       const awayImg = document.querySelector('#awayPicture img');
       const awayName = document.querySelector('.team-right .team-name');
 
-      awayImg.src = `./img/${awayTeam}.png`;
-      awayName.textContent = awayTeam.toUpperCase();
+      if (awayImg && awayName) {
+        awayImg.style.display = 'block';
+        awayImg.src = `./img/${awayTeam}.png`;
+        awayName.textContent = awayTeam.toUpperCase();
+      }
     }
   } catch (error) {
     console.error('Error loading team config:', error);
