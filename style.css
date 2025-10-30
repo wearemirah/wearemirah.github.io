@@ -23,7 +23,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgb(249, 247, 247);
+  background: rgba(65, 147, 209, 0.2);
   padding: 10px 30px;
   height: 100px;
   gap: 20px;
