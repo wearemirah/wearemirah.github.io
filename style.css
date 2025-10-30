@@ -64,6 +64,7 @@ body {
   letter-spacing: 1px;
   outline: none;
   white-space: nowrap;
+  align-items: center;
 }
 
 .score-center {
