@@ -80,6 +80,15 @@ function changeScore(team, delta) {
 function resetScores() {
   document.getElementById('score1').textContent = 0;
   document.getElementById('score2').textContent = 0;
+
+  // Reset timer to input value
+  if (isRunning) {
+    stopTimer();
+  }
+  const input = document.getElementById('timerInput');
+  timeRemaining = parseTime(input.value);
+  updateTimerDisplay();
+  timerInterval = null;
 }
 
 function parseTime(timeStr) {
