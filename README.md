@@ -1,22 +1,46 @@
-# CODING AGENTS: READ THIS FIRST
+# MIRAH — Strategic Technology Advisory
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Production website for [MIRAH](https://www.linkedin.com/company/wearemirah/), a strategic technology advisory firm. Single-page, bilingual (PT/EN), no backend.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+**Stack:** Vite 5 · React 18 · TypeScript 5 · plain CSS custom properties
 
-## What you should do — IMPORTANT
+## Getting started
 
-**Find the primary design file under `mirah-tech/project/` and read it top to bottom.** Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+```bash
+npm install
+npm run dev      # http://localhost:5173
+```
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Commands
 
-## About the design files
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start dev server with HMR |
+| `npm run build` | Type-check + build to `dist/` |
+| `npm run preview` | Serve the `dist/` build locally |
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Project structure
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+```text
+src/
+  App.tsx          # Root — theme/lang state, SEO, section composition
+  copy.ts          # All UI copy (PT + EN) + external URLs
+  index.css        # Design tokens + all styles
+  components/      # One component per page section
+public/
+  mirah-logo.png   # Full wordmark
+  mirah-mark.png   # Mark icon
+  og-image.jpg     # Open Graph image
+  robots.txt
+  sitemap.xml
+```
 
-## Bundle contents
+## External links
 
-- `mirah-tech/README.md` — this file
-- `mirah-tech/project/` — the `mirah-tech` project files (HTML prototypes, assets, components)
+| Purpose | URL |
+| --- | --- |
+| Book a call | `https://calendar.app.google/RCGVv4dGDy5QMXtX8` |
+| WhatsApp | `https://wa.me/5551993262403` |
+| LinkedIn | `https://www.linkedin.com/company/wearemirah/` |
+
+These are exported from `src/copy.ts` as `BOOK_URL`, `WA_URL`, and `LI_URL`.

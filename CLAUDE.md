@@ -4,72 +4,88 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-This is a **Claude Design handoff bundle** for MIRAH — a strategic technology advisory firm. The `project/` directory contains HTML/JSX/CSS prototypes exported from Claude's design tool. Your job is to **implement these designs pixel-perfectly** in a real production stack. Match the visual output; do not copy the prototype's internal structure (CDN React, Babel standalone, no bundler) unless it happens to fit.
+Production website for **MIRAH** — a strategic technology advisory firm. Built with Vite + React 18 + TypeScript. Single-page, bilingual (PT/EN), no backend.
 
-## Prototype structure
+## Commands
 
-| File | Role |
-|---|---|
-| `project/Mirah.html` | Entry point — loads React 18 + Babel via CDN, imports `tweaks-panel.jsx` then `app.jsx` |
-| `project/app.jsx` | All page sections + bilingual copy (`COPY.pt` / `COPY.en` objects) |
-| `project/tweaks-panel.jsx` | Reusable design-tweak panel (slider, toggle, radio, color picker) — **prototype tooling only, not for production** |
-| `project/styles.css` | Design tokens (CSS custom properties) + all component styles |
-| `project/assets/` | `mirah-logo.png` and `mirah-mark.png` — real brand assets |
-
-To preview the prototype locally, open `project/Mirah.html` directly in a browser — no build step required.
-
-## Page architecture
-
-Single-page site, top to bottom:
-
-1. **Nav** — sticky with `nav--scrolled` class added at 8px scroll; lang toggle (PT/EN); CTA button
-2. **Hero** — display heading, meta card sidebar, marquee ticker (`--brand` diamond separators)
-3. **About** — paragraph + numbered bullets list; Founders portrait grid (3-up, placeholder SVGs — real photos drop in)
-4. **Services** — 3-column hover-to-open accordion (`service--open` class on `onMouseEnter`)
-5. **Approach** — 4-step numbered grid
-6. **Contact** — full-bleed `--brand` (#E40046) section
-7. **Footer**
-
-## Design tokens (CSS custom properties)
-
-All colors, spacing, and fonts are defined as tokens in `styles.css`. **Never hardcode color values** — always use `var(--token)`. Key tokens:
-
+```bash
+npm run dev       # Start dev server (localhost:5173)
+npm run build     # tsc + vite build → dist/
+npm run preview   # Preview the dist/ build locally
 ```
---brand: #E40046           /* red, used for accents, CTA, contact section BG */
+
+There are no tests. TypeScript is the only automated check (`tsc` runs as part of `build`).
+
+## Architecture
+
+```text
+src/
+  main.tsx          # React root, mounts <App />
+  App.tsx           # Theme + lang state, SEO side-effects, section composition
+  copy.ts           # All UI strings (PT + EN), external URLs, TypeScript interfaces
+  index.css         # Design tokens + all component styles (single flat file)
+  components/       # One file per section: Nav Hero About Services Approach Contact Footer
+                    # Plus Mark.tsx (SVG icon) and Arrow.tsx (→ icon)
+public/             # Static assets: mirah-logo.png, mirah-mark.png, og-image.jpg, robots.txt, sitemap.xml
+```
+
+### State — App.tsx
+
+Two pieces of state live at the root and flow down as props:
+
+- `theme: 'light' | 'dark'` — read from `localStorage` + `prefers-color-scheme`, applied as `data-theme` on `<html>`. Currently read-only (no toggle UI).
+- `lang: 'pt' | 'en'` — read from `localStorage` + `navigator.language`, toggled in Nav. Changing it swaps `document.title` and the `<meta name="description">` for SEO.
+
+Every component receives `L: Lang` (the resolved copy object for the current language).
+
+### Copy — src/copy.ts
+
+All UI strings are in a single `COPY` object keyed by `LangKey` (`'pt' | 'en'`). The `Lang` interface enforces that both languages stay in sync. When adding copy, update **both** `COPY.pt` and `COPY.en` and add the field to the `Lang` interface.
+
+External URLs (`BOOK_URL`, `WA_URL`, `LI_URL`) are exported from the same file.
+
+### Styles — src/index.css
+
+Single flat CSS file — no modules, no preprocessor. All values go through CSS custom properties. **Never hardcode color values** — always use `var(--token)`.
+
+Key tokens:
+
+```css
+--brand: #E40046        /* red — CTA, accents, contact section BG */
 --brand-ink: #FFFFFF
---bg / --bg-elev / --bg-alt  /* surface hierarchy */
---fg / --fg-mute / --fg-dim  /* text hierarchy */
---rule / --rule-strong        /* dividers */
---font-sans: 'Geist', ...
---font-mono: 'Geist Mono', ...
+--bg / --bg-elev / --bg-alt   /* surface hierarchy */
+--fg / --fg-mute / --fg-dim   /* text hierarchy */
+--rule / --rule-strong         /* dividers */
+--font-sans / --font-display / --font-mono
 --maxw: 1240px
 --pad-x: clamp(20px, 5vw, 64px)
 ```
 
-Dark mode is toggled via `[data-theme="dark"]` on `<html>`.
+Dark mode: `[data-theme="dark"]` overrides the root tokens. No JS per-element — just the attribute on `<html>`.
 
-## i18n / copy
+### Responsive breakpoints
 
-All UI strings live in the `COPY` object in `app.jsx` — two top-level keys: `pt` (default) and `en`. The active copy is selected by `t.lang` tweak. Both sets must stay in sync when adding new copy.
+| Breakpoint | What changes |
+| --- | --- |
+| 960px | Hero grid collapses; services stack; approach steps 2×2 |
+| 820px | Nav links hide; about grid stacks |
+| 720px | Founders portrait 2-col (3rd centered full-width) |
+| 560px | Approach steps single-col; footer stacks |
 
-## External URLs
+`@media (prefers-reduced-motion: reduce)` stops the marquee and pulse animations.
 
-```js
-BOOK_URL = "https://calendar.app.google/RCGVv4dGDy5QMXtX8"  // Google Calendar
-WA_URL   = "https://wa.me/5551993262403"                     // WhatsApp
-LI_URL   = "https://www.linkedin.com/company/wearemirah/"    // LinkedIn
-```
+### Section-specific behavior
+
+- **Nav** — adds `.nav--scrolled` (border + tighter padding) at `scrollY > 8px`
+- **Services** — hover/focus toggles `.service--open` (background swap) per card
+- **Hero** — marquee ticker uses CSS `animation: marquee` on a doubled track (`translateX(-50%)`)
+- **Portrait** — `data-accent="1"` on the first frame applies brand-color background
 
 ## Assets
 
-- `project/assets/mirah-logo.png` — full wordmark
-- `project/assets/mirah-mark.png` — mark only (equivalent to the inline `<Mark>` SVG component)
-- Founder portrait frames use SVG placeholder patterns; real photos drop in as `<img>` inside `.portrait-frame`
+Brand assets are in `public/` and served at root:
 
-## Implementation notes
+- `/mirah-logo.png` — full wordmark
+- `/mirah-mark.png` — mark only (same shape as the inline `<Mark>` SVG component)
 
-- The `Mark` component (double-bracket SVG icon) and `Arrow` component (→ icon) are tiny inline SVGs — keep them inline in production for zero HTTP overhead
-- `TweaksPanel` / `useTweaks` are prototype-only design tooling — do not ship to production
-- `TWEAK_DEFAULTS` block (`/*EDITMODE-BEGIN*/…/*EDITMODE-END*/`) is a host-rewrite target for Claude Design — irrelevant after handoff
-- Responsive breakpoints: 960px (hero grid collapses, services stack), 820px (nav links hide, about grid stacks), 720px (founders 2-col), 560px (steps single-col, footer stacks)
-- `@media (prefers-reduced-motion: reduce)` stops the marquee and pulse animations
+The `<Mark>` and `<Arrow>` components are tiny inline SVGs — keep them inline.

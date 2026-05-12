@@ -1,5 +1,4 @@
 import { Lang } from '../copy';
-import Portrait from './Portrait';
 
 interface Props {
   L: Lang;
@@ -23,16 +22,7 @@ export default function About({ L }: Props) {
           ))}
         </ul>
       </div>
-      <div className="founders">
-        <div className="founders-h">
-          <span className="mono dim">— {L.foundersKicker}</span>
-        </div>
-        <div className="founders-grid">
-          <Portrait name="Founder One" role="Co-founder · Partner" />
-          <Portrait name="Founder Two" role="Co-founder · Partner" accent />
-          <Portrait name="Founder Three" role="Partner · Advisor" />
-        </div>
-      </div>
+      {/* founders section hidden until content is ready */}
     </section>
   );
 }

@@ -23,3 +23,6 @@ dist-ssr/
 # IDE tooling
 .qodo/
 .playwright-mcp/
+
+# TEMP
+.temp/
