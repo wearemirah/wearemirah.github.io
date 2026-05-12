@@ -33,6 +33,20 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
     localStorage.setItem('mirah-lang', lang);
+
+    const seo = {
+      pt: {
+        title: 'MIRAH — Aconselhamento Estratégico em Tecnologia',
+        description: 'MIRAH oferece aconselhamento estratégico em tecnologia com profissionais C-level e board advisors. Mentoria executiva, CTO sob demanda e consultoria especializada para empresas no Brasil, LATAM e global.',
+      },
+      en: {
+        title: 'MIRAH — Strategic Technology Advisory',
+        description: 'MIRAH delivers strategic technology advisory with C-level operators and board advisors. Executive mentorship, fractional CTO, and bespoke consulting for companies in Brazil, LATAM and globally.',
+      },
+    };
+
+    document.title = seo[lang].title;
+    document.querySelector<HTMLMetaElement>('meta[name="description"]')!.content = seo[lang].description;
   }, [lang]);
 
   const L = COPY[lang];
