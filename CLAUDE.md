@@ -12,6 +12,7 @@ Production website for **MIRAH** — a strategic technology advisory firm. Built
 npm run dev       # Start dev server (localhost:5173)
 npm run build     # tsc + vite build → dist/
 npm run preview   # Preview the dist/ build locally
+npx tsc --noEmit  # Type-check only, no output (faster than a full build)
 ```
 
 There are no tests. TypeScript is the only automated check (`tsc` runs as part of `build`).
@@ -78,8 +79,14 @@ Dark mode: `[data-theme="dark"]` overrides the root tokens. No JS per-element �
 
 - **Nav** — adds `.nav--scrolled` (border + tighter padding) at `scrollY > 8px`
 - **Services** — hover/focus toggles `.service--open` (background swap) per card
-- **Hero** — marquee ticker uses CSS `animation: marquee` on a doubled track (`translateX(-50%)`)
-- **Portrait** — `data-accent="1"` on the first frame applies brand-color background
+- **Hero** — marquee ticker uses CSS `animation: marquee` on a doubled track (`translateX(-50%)`). `TICKER_WORDS` are hardcoded in `Hero.tsx` (not in `copy.ts`) and are intentionally English-only
+- **About** — founders section exists in `copy.ts` (`foundersKicker`) but is intentionally commented out in `About.tsx` pending real founder content
+- **Portrait** — placeholder component: renders an SVG silhouette with a "portrait · drop here" label. `data-accent="1"` applies brand-color background. Real photos are not yet placed
+
+### localStorage keys
+
+- `mirah-theme` — persists `'light' | 'dark'`; falls back to `prefers-color-scheme`
+- `mirah-lang` — persists `'pt' | 'en'`; falls back to `navigator.language`
 
 ## Assets
 
