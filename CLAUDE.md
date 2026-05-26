@@ -17,6 +17,8 @@ npx tsc --noEmit  # Type-check only, no output (faster than a full build)
 
 There are no tests. TypeScript is the only automated check (`tsc` runs as part of `build`).
 
+`tsconfig.json` has `noUnusedLocals` and `noUnusedParameters` enabled — unused imports or parameters fail the build.
+
 ## Architecture
 
 ```text
@@ -41,9 +43,19 @@ Every component receives `L: Lang` (the resolved copy object for the current lan
 
 ### Copy — src/copy.ts
 
-All UI strings are in a single `COPY` object keyed by `LangKey` (`'pt' | 'en'`). The `Lang` interface enforces that both languages stay in sync. When adding copy, update **both** `COPY.pt` and `COPY.en` and add the field to the `Lang` interface.
+All UI strings are in a single `COPY` object keyed by `LangKey` (`'pt' | 'en'`). The `Lang`, `Service`, and `Step` interfaces are defined here and imported wherever needed. The `Lang` interface enforces that both languages stay in sync. When adding copy, update **both** `COPY.pt` and `COPY.en` and add the field to the `Lang` interface.
 
 External URLs (`BOOK_URL`, `WA_URL`, `LI_URL`) are exported from the same file.
+
+### SEO — where to update what
+
+| What | Where |
+| --- | --- |
+| `<title>` and `<meta name="description">` (both languages) | `App.tsx` — `useEffect` keyed on `lang` |
+| OG tags, Twitter card, JSON-LD structured data | `index.html` — static, PT-only, must be edited directly |
+| Keywords, canonical, hreflang, favicon | `index.html` — static, edit directly |
+
+Fonts (Geist Sans, Geist Mono) are loaded from Google Fonts in `index.html`, not from npm.
 
 ### Styles — src/index.css
 
