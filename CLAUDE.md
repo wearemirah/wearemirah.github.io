@@ -21,7 +21,9 @@ There are no tests. TypeScript is the only automated check (`tsc` runs as part o
 
 ## Deployment
 
-GitHub Pages repo — served at the custom domain **mirah.me**. There is no CI/CD pipeline. Deploy by building locally and publishing `dist/` to the `gh-pages` branch (e.g., with `npx gh-pages -d dist`). The `public/CNAME` file with value `mirah.me` must exist in the build output for the custom domain to stick.
+GitHub Pages repo — served at the custom domain **mirah.me**. Push to `main` triggers `.github/workflows/deploy.yml`, which runs `npm ci && npm run build` and deploys `dist/` via `actions/deploy-pages`. `public/CNAME` contains `mirah.me` and is copied into the build output automatically by Vite.
+
+**One-time repo setting required:** In GitHub → Settings → Pages → Source, select **GitHub Actions** (not a branch). Without this the workflow upload step succeeds but the deploy step is blocked.
 
 ## Architecture
 
