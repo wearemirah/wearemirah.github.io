@@ -19,6 +19,10 @@ There are no tests. TypeScript is the only automated check (`tsc` runs as part o
 
 `tsconfig.json` has `noUnusedLocals` and `noUnusedParameters` enabled — unused imports or parameters fail the build.
 
+## Deployment
+
+GitHub Pages repo — served at the custom domain **mirah.me**. There is no CI/CD pipeline. Deploy by building locally and publishing `dist/` to the `gh-pages` branch (e.g., with `npx gh-pages -d dist`). The `public/CNAME` file with value `mirah.me` must exist in the build output for the custom domain to stick.
+
 ## Architecture
 
 ```text
@@ -39,7 +43,7 @@ Two pieces of state live at the root and flow down as props:
 - `theme: 'light' | 'dark'` — read from `localStorage` + `prefers-color-scheme`, applied as `data-theme` on `<html>`. Currently read-only (no toggle UI).
 - `lang: 'pt' | 'en'` — read from `localStorage` + `navigator.language`, toggled in Nav. Changing it swaps `document.title` and the `<meta name="description">` for SEO.
 
-Every component receives `L: Lang` (the resolved copy object for the current language).
+Every component receives `L: Lang` (the resolved copy object for the current language). Nav additionally takes `lang: LangKey` and `setLang: (l: LangKey) => void`. Services keeps its own local `open` state (index of the highlighted card) — it is not lifted to App.
 
 ### Copy — src/copy.ts
 
@@ -69,12 +73,33 @@ Key tokens:
 --bg / --bg-elev / --bg-alt   /* surface hierarchy */
 --fg / --fg-mute / --fg-dim   /* text hierarchy */
 --rule / --rule-strong         /* dividers */
+--card                         /* card surface (white light / #151517 dark) */
+--shadow                       /* elevation shadow (light or dark variant) */
 --font-sans / --font-display / --font-mono
 --maxw: 1240px
 --pad-x: clamp(20px, 5vw, 64px)
 ```
 
 Dark mode: `[data-theme="dark"]` overrides the root tokens. No JS per-element — just the attribute on `<html>`.
+
+Reusable CSS utilities:
+
+| Class | Purpose |
+| --- | --- |
+| `.section` | Standard page section — `padding` + centered `max-width` container |
+| `.section--alt` | Same as `.section` but uses `--bg-alt` background |
+| `.section-head` | Two-row header: kicker above, `h2` below |
+| `.kicker` | Small mono label with brand dot — used at the top of every section |
+| `.kicker--on-brand` | Variant for light text on the brand-red contact section |
+| `.btn--primary` | Brand red fill (Nav + Hero + service CTA) |
+| `.btn--ghost` | Outlined on default background |
+| `.btn--inverse` | White fill for use on dark/brand backgrounds |
+| `.btn--ghost-on-brand` | Outlined for use on the brand-red contact section |
+| `.btn--lg` | Larger padding/font size modifier for hero-scale CTAs |
+| `.mono` | `var(--font-mono)` utility |
+| `.dim` | `color: var(--fg-dim)` utility |
+
+Section anchor IDs (used by nav `href` attributes): `#top`, `#about`, `#services`, `#approach`, `#contact`.
 
 ### Responsive breakpoints
 
