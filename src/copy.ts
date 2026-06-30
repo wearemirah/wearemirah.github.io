@@ -171,5 +171,5 @@ export const COPY: Record<LangKey, Lang> = {
 };
 
 export const BOOK_URL = 'https://calendar.app.google/RCGVv4dGDy5QMXtX8';
-export const WA_URL = 'https://wa.me/5551993262403';
+export const WA_URL = 'https://wa.me/PHONENUMBER?text=Ol%C3%A1%20MIRAH%21%20Topa%20bater%20um%20papo%3F';
 export const LI_URL = 'https://www.linkedin.com/company/wearemirah/';
