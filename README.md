@@ -40,7 +40,7 @@ public/
 | Purpose | URL |
 | --- | --- |
 | Book a call | `https://calendar.app.google/RCGVv4dGDy5QMXtX8` |
-| WhatsApp | `https://wa.me/5551993262403` |
+| WhatsApp | `https://wa.me/5551992859146` |
 | LinkedIn | `https://www.linkedin.com/company/wearemirah/` |
 
 These are exported from `src/copy.ts` as `BOOK_URL`, `WA_URL`, and `LI_URL`.

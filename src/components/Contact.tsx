@@ -25,7 +25,7 @@ export default function Contact({ L }: Props) {
           <span className="sep" />
           <a href={LI_URL} target="_blank" rel="noopener noreferrer">linkedin/wearemirah ↗</a>
           <span className="sep" />
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer">+55 51 99326-2403 ↗</a>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer">+55 51 99285-9146 ↗</a>
         </div>
       </div>
     </section>
