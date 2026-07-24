@@ -23,7 +23,7 @@ export default function Contact({ L }: Props) {
         <div className="contact-foot mono">
           <span>mirah.me</span>
           <span className="sep" />
-          <a href={LI_URL} target="_blank" rel="noopener noreferrer">linkedin/wearemirah ↗</a>
+          <a href={LI_URL} target="_blank" rel="noopener noreferrer">linkedin ↗</a>
           <span className="sep" />
           <a href={WA_URL} target="_blank" rel="noopener noreferrer">whatsapp ↗</a>
         </div>
