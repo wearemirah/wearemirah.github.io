@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirah · Programa de Mentoria em Maturidade de TI — 30 Dias</title>
+<link rel="icon" type="image/png" href="/mirah-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   MIRAH DESIGN SYSTEM — tokens shared with mirah.me (src/index.css)
+   ============================================================ */
+:root{
+  --brand:#E40046;
+  --brand-ink:#FFFFFF;
+  --bg:#F6F4EF;
+  --bg-elev:#FFFFFF;
+  --bg-alt:#EDEAE3;
+  --fg:#11110F;
+  --fg-mute:#5C5A55;
+  --fg-dim:#8E8B84;
+  --rule:rgba(17,17,15,0.10);
+  --rule-strong:rgba(17,17,15,0.20);
+  --card:#FFFFFF;
+  --shadow:0 1px 0 rgba(17,17,15,0.04),0 10px 30px -18px rgba(17,17,15,0.18);
+  --maxw:900px;
+  --pad-x:clamp(20px,5vw,64px);
+  --font-sans:'Geist','Söhne',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-display:'Geist','Söhne',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'Geist Mono',ui-monospace,'JetBrains Mono','SF Mono',Menlo,monospace;
+  /* status accents — muted, kept inside the warm editorial palette */
+  --ok:#3F6B4E; --ok-bg:#E4EDE4;
+  --warn:#8A5A22; --warn-bg:#F1E6D3;
+  --danger:#9C3B32; --danger-bg:#F3E1DE;
+  --info:#3C5A78; --info-bg:#E1E7EE;
+}
+[data-theme="dark"]{
+  --bg:#0D0D0E; --bg-elev:#131316; --bg-alt:#08080A;
+  --fg:#F2F0EA; --fg-mute:#A8A49A; --fg-dim:#6B6862;
+  --rule:rgba(242,240,234,0.10); --rule-strong:rgba(242,240,234,0.22);
+  --card:#151517; --shadow:0 1px 0 rgba(255,255,255,0.04),0 20px 60px -28px rgba(0,0,0,0.6);
+  --ok:#7FB088; --ok-bg:#16231A;
+  --warn:#D6A45E; --warn-bg:#2A2013;
+  --danger:#E2897C; --danger-bg:#2B1815;
+  --info:#8FAAC9; --info-bg:#161E27;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D0D0E; --bg-elev:#131316; --bg-alt:#08080A;
+    --fg:#F2F0EA; --fg-mute:#A8A49A; --fg-dim:#6B6862;
+    --rule:rgba(242,240,234,0.10); --rule-strong:rgba(242,240,234,0.22);
+    --card:#151517; --shadow:0 1px 0 rgba(255,255,255,0.04),0 20px 60px -28px rgba(0,0,0,0.6);
+    --ok:#7FB088; --ok-bg:#16231A;
+    --warn:#D6A45E; --warn-bg:#2A2013;
+    --danger:#E2897C; --danger-bg:#2B1815;
+    --info:#8FAAC9; --info-bg:#161E27;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  color:var(--fg);
+  background:var(--bg);
+  font-feature-settings:"ss01","cv11";
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  line-height:1.55;
+  letter-spacing:-0.005em;
+  font-size:15px;
+}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--font-mono);font-feature-settings:"ss01";letter-spacing:0}
+.dim{color:var(--fg-dim)}
+
+/* ---- nav ---- */
+.doc-nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:16px var(--pad-x);
+  background:color-mix(in oklab, var(--bg) 80%, transparent);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--rule);
+}
+.nav-brand{display:inline-flex;align-items:center;gap:10px}
+.nav-mark{display:inline-flex}
+.nav-wordmark{font-family:var(--font-display);font-weight:700;letter-spacing:0.06em;font-size:15px}
+.doc-nav-meta{text-align:right;font-size:12px;line-height:1.5}
+.doc-nav-meta .ph{font-size:11px}
+
+/* ---- page ---- */
+.doc-page{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x) 80px}
+
+/* ---- kicker / hero ---- */
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--fg-mute);margin:40px 0 18px;
+}
+.kicker .dot{width:7px;height:7px;border-radius:999px;background:var(--brand);box-shadow:0 0 0 3px color-mix(in oklab, var(--brand) 18%, transparent)}
+h1.doc-h1{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(30px,4.6vw,46px);line-height:1.06;letter-spacing:-0.03em;
+  margin-bottom:14px;text-wrap:balance;
+}
+.lead{font-size:clamp(16px,1.3vw,18px);color:var(--fg-mute);max-width:64ch;margin-bottom:26px;text-wrap:pretty}
+.pillars{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+.pill{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--fg);
+  background:var(--card);border:1px solid var(--rule-strong);border-radius:999px;
+  padding:6px 14px;box-shadow:var(--shadow);
+}
+
+/* ---- engagement card ---- */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);padding:24px;margin-bottom:28px}
+.card-h{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:16px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px 24px}
+.field label{display:block;font-family:var(--font-mono);font-size:10.5px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:5px}
+.ph{
+  display:inline-block;font-family:var(--font-mono);font-size:13px;color:var(--brand);
+  background:color-mix(in oklab, var(--brand) 8%, transparent);
+  border:1px dashed color-mix(in oklab, var(--brand) 45%, transparent);
+  border-radius:5px;padding:2px 8px;
+}
+
+/* ---- internal-use note ---- */
+.internal{
+  border:1px dashed color-mix(in oklab, var(--warn) 55%, transparent);
+  background:var(--warn-bg);border-radius:10px;padding:14px 18px;margin:16px 0 8px;
+  font-size:13px;color:var(--warn);
+}
+.internal strong{color:var(--warn)}
+.internal code{font-family:var(--font-mono);font-size:12px}
+
+/* ---- sections ---- */
+h2{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.02em;color:var(--fg);
+  margin:60px 0 8px;display:flex;align-items:baseline;gap:10px;text-wrap:balance;
+}
+h2 .num{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--brand)}
+h3{font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:-0.01em;color:var(--fg);margin:26px 0 10px}
+.sec-lede{color:var(--fg-mute);margin-bottom:20px;max-width:70ch;font-size:15px}
+p{margin-bottom:12px}
+ul,ol{margin:0 0 14px 20px}
+li{margin-bottom:6px}
+strong{color:var(--fg);font-weight:600}
+em.fill{font-style:normal;color:var(--fg-mute)}
+
+/* ---- tables ---- */
+table{
+  width:100%;border-collapse:collapse;background:var(--card);
+  border:1px solid var(--rule);border-radius:10px;overflow:hidden;
+  margin:14px 0 24px;font-size:13.5px;
+}
+th{
+  background:var(--fg);color:var(--bg);text-align:left;
+  font-family:var(--font-mono);font-size:10.5px;font-weight:500;
+  letter-spacing:0.08em;text-transform:uppercase;padding:10px 12px;
+}
+td{padding:9px 12px;border-top:1px solid var(--rule);vertical-align:top}
+tr:nth-child(even) td{background:var(--bg-alt)}
+td.c,th.c{text-align:center;white-space:nowrap}
+.score{
+  display:inline-block;min-width:40px;border:1px dashed var(--rule-strong);
+  border-radius:5px;color:var(--fg-dim);text-align:center;
+  font-family:var(--font-mono);font-size:12px;padding:1px 4px;
+}
+
+/* ---- badges ---- */
+.badge{display:inline-block;font-family:var(--font-mono);font-size:10.5px;font-weight:500;letter-spacing:0.02em;border-radius:999px;padding:3px 10px}
+.badge-ok{color:var(--ok);background:var(--ok-bg)}
+.badge-warn{color:var(--warn);background:var(--warn-bg)}
+.badge-info{color:var(--info);background:var(--info-bg)}
+.badge-danger{color:var(--danger);background:var(--danger-bg)}
+.badge-brand{color:var(--brand);background:color-mix(in oklab, var(--brand) 12%, transparent)}
+
+/* ---- note ---- */
+.note{border-left:3px solid var(--brand);background:var(--bg-alt);border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;font-size:13.5px}
+.note strong{color:var(--brand)}
+
+/* ---- weeks ---- */
+.week{background:var(--card);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);margin:22px 0;overflow:hidden}
+.week-head{display:flex;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--rule)}
+.week-n{
+  flex:none;width:42px;height:42px;border-radius:10px;background:var(--brand);color:var(--brand-ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:600;font-size:17px;
+}
+.week-head h3{margin:0;font-size:16.5px}
+.week-head p{margin:2px 0 0;font-size:12.5px;color:var(--fg-mute)}
+.week-body{padding:18px 22px 8px}
+.hw{background:var(--bg-alt);border-top:1px solid var(--rule);padding:14px 22px 10px}
+.hw-title{font-family:var(--font-mono);font-size:10.5px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
+.check{list-style:none;margin-left:0}
+.check li{padding-left:26px;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border:1.5px solid var(--rule-strong);border-radius:4px;background:var(--card)}
+
+/* ---- matrix (impact × effort) ---- */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:18px 0 8px}
+.quad{background:var(--bg-alt);padding:20px}
+.quad h4{font-family:var(--font-display);font-weight:600;font-size:15.5px;margin-bottom:4px;color:var(--fg)}
+.quad small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-mute);margin-bottom:8px}
+.quad p{font-size:13px;margin:0;color:var(--fg-mute)}
+.quad-hot{background:var(--brand)}
+.quad-hot h4,.quad-hot small,.quad-hot p{color:var(--brand-ink)}
+.quad-hot small{opacity:.85}
+.axis{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-mute);margin-bottom:6px}
+
+/* ---- footer ---- */
+.footer{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+  margin-top:56px;padding:28px 0;border-top:1px solid var(--rule);font-size:13px;
+}
+.footer-l{display:inline-flex;align-items:center;gap:10px}
+.footer-r{font-size:12px}
+
+/* ---- print / PDF ---- */
+@media print{
+  body{background:#fff;font-size:12px}
+  .doc-nav{position:static;backdrop-filter:none;background:#fff}
+  .doc-page{max-width:100%;padding:0}
+  .internal{display:none!important}
+  .card,.week,table,.quad,.pill{box-shadow:none}
+  .week,h2{break-inside:avoid;page-break-inside:avoid}
+  h2{page-break-after:avoid}
+  a{color:inherit;text-decoration:none}
+}
+@media (max-width:640px){
+  .matrix{grid-template-columns:1fr}
+  .doc-nav-meta{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="doc-nav">
+  <a href="https://mirah.me" class="nav-brand" aria-label="MIRAH">
+    <span class="nav-mark">
+      <svg width="22" height="17" viewBox="0 0 100 78" fill="none" aria-hidden="true">
+        <path d="M40 4 L4 39 L40 74 L40 60 L18 39 L40 18 Z" fill="var(--brand)" />
+        <path d="M60 4 L96 39 L60 74 L60 60 L82 39 L60 18 Z" fill="var(--brand)" />
+      </svg>
+    </span>
+    <span class="nav-wordmark">MIRAH</span>
+  </a>
+  <div class="doc-nav-meta mono dim">
+    CTO as a Service · Mentoria Executiva<br>
+    Versão <strong class="mono" style="color:var(--fg)">1.0</strong> · <span class="ph">⟨DATA⟩</span>
+  </div>
+</nav>
+
+<div class="doc-page">
+
+<div class="kicker"><span class="dot"></span>Programa de Mentoria · 30 dias</div>
+<h1 class="doc-h1">Maturidade de TI para Pequenas Empresas</h1>
+<p class="lead">Quatro encontros semanais de 3 horas, com diagnóstico estruturado, tarefas práticas entre sessões e, ao final, um plano de ação de 90 dias priorizado por resultados rápidos.</p>
+<div class="pillars">
+  <span class="pill">Adoção de IA</span>
+  <span class="pill">Transformação Digital</span>
+  <span class="pill">Otimização de SDLC</span>
+  <span class="pill">Eficiência de Custos</span>
+</div>
+
+<div class="card">
+  <div class="card-h">Ficha do engajamento</div>
+  <div class="fields">
+    <div class="field"><label>Cliente</label><span class="ph">⟨EMPRESA⟩</span></div>
+    <div class="field"><label>Mentorado(a)</label><span class="ph">⟨GESTOR(A) DE TI⟩</span></div>
+    <div class="field"><label>Mentor(a) Mirah</label><span class="ph">⟨CONSULTOR(A)⟩</span></div>
+    <div class="field"><label>Período</label><span class="ph">⟨INÍCIO⟩ → ⟨FIM⟩</span></div>
+    <div class="field"><label>Status</label> <span class="badge badge-info">Não iniciado</span> <span class="badge badge-warn">Em andamento</span> <span class="badge badge-ok">Concluído</span></div>
+  </div>
+</div>
+
+<div class="internal">
+  <strong>USO INTERNO MIRAH — este bloco não sai na impressão/PDF.</strong><br>
+  Antes de enviar ao cliente: (1) substitua todos os campos <span class="ph">⟨ASSIM⟩</span>; (2) ajuste exemplos ao setor do cliente; (3) atualize a versão e a data no cabeçalho; (4) gere o PDF via imprimir → salvar como PDF (blocos internos como este são ocultados automaticamente). O arquivo <code>.md</code> companheiro é o instrumento de trabalho editável das sessões; este HTML é a peça de apresentação e proposta.
+</div>
+
+<!-- ================================================== -->
+<h2><span class="num">01</span> Como usar este documento</h2>
+<p class="sec-lede">Este material é o instrumento vivo do programa: aberto, preenchido e atualizado a cada semana — não um relatório para arquivar.</p>
+<ol>
+  <li><strong>Dois artefatos, um programa.</strong> Esta peça (HTML/PDF) apresenta o método; o arquivo de trabalho em Markdown acompanha as sessões e recebe os preenchimentos semanais, com versionamento (1.1, 1.2…) em Git ou pasta compartilhada.</li>
+  <li><strong>Questionário antes de tudo.</strong> A avaliação da Seção 03 é respondida <em>antes</em> da Sessão 1 e reaplicada 90 dias após o programa para medir evolução.</li>
+  <li><strong>Dever de casa dimensionado.</strong> As tarefas entre sessões exigem 2–4 h/semana. O que não for concluído vira dado de diagnóstico na sessão seguinte — nunca motivo de culpa.</li>
+  <li><strong>Produto final.</strong> O Plano de Ação 90 Dias (Seção 06) nasce nas Semanas 1–3 e é consolidado na Semana 4; depois, segue como painel trimestral do cliente.</li>
+  <li><strong>Regra de ouro.</strong> O programa é um esqueleto, não uma camisa de força: tudo aqui deve ser adaptado à realidade da empresa.</li>
+</ol>
+
+<!-- ================================================== -->
+<h2><span class="num">02</span> Contexto e princípios</h2>
+<p class="sec-lede">O Índice de Maturidade Digital das PMEs brasileiras, calculado pelo <strong>Sebrae</strong>, atingiu apenas <strong>37% (escala até 80%) em 2025</strong>; e pesquisa do <strong>G4 Educação (2025)</strong> indica que ~59% dos empresários tratam IA como prioridade, mas só ~22% a usam de forma estruturada. Há ganho enorme disponível — com método, não com grandes investimentos.</p>
+<table>
+  <tr><th style="width:34%">Princípio</th><th>Fundamento (fonte citada)</th></tr>
+  <tr><td><strong>Medir antes de mudar</strong></td><td>Máxima da gestão da qualidade associada a <strong>W. E. Deming</strong> e <strong>P. Drucker</strong>: não se gerencia o que não se mede. A Semana 1 é diagnóstico, não solução.</td></tr>
+  <tr><td><strong>Fluxo antes de ferramenta</strong></td><td>Pesquisa <strong>DORA / Google Cloud</strong> e <em>Accelerate</em> (<strong>Forsgren, Humble e Kim, 2018</strong>): desempenho vem de práticas — lotes pequenos, automação — não de compra de ferramenta.</td></tr>
+  <tr><td><strong>Começar pela dor repetitiva</strong></td><td>Consenso de mercado para IA em PMEs: primeiro caso de uso pequeno, decisivo e ligado a uma dor real.</td></tr>
+  <tr><td><strong>Custo é disciplina contínua</strong></td><td>Ciclo <strong>Inform → Optimize → Operate</strong> do framework da <strong>FinOps Foundation</strong>.</td></tr>
+  <tr><td><strong>Risco de IA desde o início</strong></td><td>Versão PME do <strong>NIST AI RMF 1.0 (2023)</strong>: mapear, medir, gerenciar e governar — em 1 página, não em comitê.</td></tr>
+  <tr><td><strong>Mudança é gente</strong></td><td><strong>J. Kotter</strong>, <em>Leading Change</em> (1996): urgência, vitórias rápidas visíveis e comunicação constante.</td></tr>
+  <tr><td><strong>Transformação é gestão</strong></td><td><strong>Westerman, Bonnet e McAfee (MIT Sloan)</strong>, <em>Leading Digital</em> (2014): quem transforma é a gestão; tecnologia é o meio.</td></tr>
+</table>
+
+<!-- ================================================== -->
+<h2><span class="num">03</span> Avaliação inicial de maturidade</h2>
+<p class="sec-lede">Respondida individualmente pelo(a) gestor(a) de TI (30–45 min), antes da Sessão 1. Escala por afirmação: <strong>1</strong> não existe · <strong>2</strong> informal · <strong>3</strong> inconsistente · <strong>4</strong> praticado · <strong>5</strong> praticado e medido.</p>
+
+<h3>Pilar A — Adoção de IA</h3>
+<table>
+  <tr><th class="c">#</th><th>Afirmação</th><th class="c">Nota</th></tr>
+  <tr><td class="c">A1</td><td>Sabemos quais ferramentas de IA a equipe já usa, mesmo informalmente ("shadow AI").</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">A2</td><td>Há ao menos um caso de uso de IA recorrente e ligado a um processo do negócio.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">A3</td><td>Existe orientação escrita sobre o que pode ou não ser colocado em IA (dados de clientes, LGPD).</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">A4</td><td>Conseguimos estimar tempo ou dinheiro economizado pelos usos atuais de IA.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">A5</td><td>A equipe recebeu capacitação básica em uso de IA (prompts, revisão de saídas, limites).</td><td class="c"><span class="score">1–5</span></td></tr>
+</table>
+
+<h3>Pilar B — Transformação Digital</h3>
+<table>
+  <tr><th class="c">#</th><th>Afirmação</th><th class="c">Nota</th></tr>
+  <tr><td class="c">B1</td><td>Os processos críticos estão mapeados (entrada → etapas → saída → responsável).</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">B2</td><td>Os dados importantes estão em sistemas, não em planilhas soltas ou na cabeça de pessoas.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">B3</td><td>Os sistemas principais conversam entre si, com pouco retrabalho manual.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">B4</td><td>Existe backup testado e plano mínimo de continuidade.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">B5</td><td>Decisões de tecnologia seguem prioridades do negócio, não só urgências.</td><td class="c"><span class="score">1–5</span></td></tr>
+</table>
+
+<h3>Pilar C — SDLC / Entrega de mudanças e serviços de TI</h3>
+<table>
+  <tr><th class="c">#</th><th>Afirmação</th><th class="c">Nota</th></tr>
+  <tr><td class="c">C1</td><td>Demandas entram por canal único e priorizado (backlog), não por WhatsApp/corredor.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">C2</td><td>Mudanças passam por controle de versão e/ou registro do que foi alterado.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">C3</td><td>Há teste ou validação antes de colocar mudanças em produção.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">C4</td><td>Sabemos o tempo médio do pedido à entrega (lead time).</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">C5</td><td>Incidentes são registrados e geram aprendizado.</td><td class="c"><span class="score">1–5</span></td></tr>
+</table>
+
+<h3>Pilar D — Eficiência e Custos</h3>
+<table>
+  <tr><th class="c">#</th><th>Afirmação</th><th class="c">Nota</th></tr>
+  <tr><td class="c">D1</td><td>Há inventário atualizado de contratos, licenças e assinaturas (SaaS, nuvem, telecom).</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">D2</td><td>Sabemos o custo mensal total de TI e sua proporção da receita.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">D3</td><td>Licenças e assinaturas são revisadas periodicamente para corte do que não é usado.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">D4</td><td>Os maiores custos têm "dono" que responde por eles.</td><td class="c"><span class="score">1–5</span></td></tr>
+  <tr><td class="c">D5</td><td>Novas contratações são comparadas com alternativas (open source, planos menores).</td><td class="c"><span class="score">1–5</span></td></tr>
+</table>
+
+<h3>Resultado e régua de interpretação</h3>
+<table>
+  <tr><th>Pilar</th><th class="c">Soma (5–25)</th><th class="c">Nível</th></tr>
+  <tr><td>A — Adoção de IA</td><td class="c"><span class="score">&nbsp;</span></td><td class="c"><span class="score">&nbsp;</span></td></tr>
+  <tr><td>B — Transformação Digital</td><td class="c"><span class="score">&nbsp;</span></td><td class="c"><span class="score">&nbsp;</span></td></tr>
+  <tr><td>C — SDLC</td><td class="c"><span class="score">&nbsp;</span></td><td class="c"><span class="score">&nbsp;</span></td></tr>
+  <tr><td>D — Eficiência e Custos</td><td class="c"><span class="score">&nbsp;</span></td><td class="c"><span class="score">&nbsp;</span></td></tr>
+  <tr><td><strong>Total (20–100)</strong></td><td class="c"><span class="score">&nbsp;</span></td><td class="c"><span class="score">&nbsp;</span></td></tr>
+</table>
+<p>
+  <span class="badge badge-danger">5–10 · Inicial</span>&nbsp;
+  <span class="badge badge-warn">11–15 · Em formação</span>&nbsp;
+  <span class="badge badge-info">16–20 · Estruturado</span>&nbsp;
+  <span class="badge badge-ok">21–25 · Otimizado</span>
+</p>
+<div class="note"><strong>Como usar o resultado:</strong> o pilar de menor nota aponta os "low-hanging fruits" mais óbvios; o de maior nota, onde já há tração para vitórias rápidas. Ambos alimentam a priorização da Semana 4. Reaplicar em 90 dias.</div>
+
+<!-- ================================================== -->
+<h2><span class="num">04</span> As quatro semanas</h2>
+<p class="sec-lede">Arco do programa: <strong>Diagnóstico → IA e Transformação → SDLC e Custos → Plano de Ação</strong>. Cada sessão tem 3 horas; o dever de casa, 2–4 h/semana.</p>
+
+<div class="week">
+  <div class="week-head">
+    <div class="week-n">1</div>
+    <div><h3>Diagnóstico e linha de base</h3><p>Retrato honesto da operação + números de partida · Pré-requisito: questionário respondido com 48h de antecedência</p></div>
+  </div>
+  <div class="week-body">
+    <table>
+      <tr><th class="c">Bloco</th><th class="c">Duração</th><th>Conteúdo</th></tr>
+      <tr><td class="c">1</td><td class="c">0:30</td><td>Expectativas, regras do programa e definição de sucesso ("como saberemos que valeu a pena?").</td></tr>
+      <tr><td class="c">2</td><td class="c">0:45</td><td>Leitura conjunta do questionário: discutir notas ≤2 e ≥4; o mentor desafia notas "otimistas".</td></tr>
+      <tr><td class="c">3</td><td class="c">0:45</td><td>Mapa da operação em 1 página: sistemas, integrações, planilhas críticas, pessoas-chave, pontos únicos de falha.</td></tr>
+      <tr><td class="c">4</td><td class="c">0:45</td><td>Top 10 dores operacionais, com estimativa de horas/mês desperdiçadas em cada uma.</td></tr>
+      <tr><td class="c">5</td><td class="c">0:15</td><td>Fechamento: registrar decisões e confirmar dever de casa.</td></tr>
+    </table>
+  </div>
+  <div class="hw">
+    <div class="hw-title">Dever de casa · 2–4h</div>
+    <ul class="check">
+      <li><strong>Inventário de custos de TI:</strong> assinaturas, licenças, nuvem, telecom e contratos — valor mensal, dono, uso real. <em>(Passo "Inform" do FinOps.)</em></li>
+      <li><strong>Censo de IA sombra:</strong> perguntar à equipe, sem tom punitivo, quais ferramentas já usa e para quê.</li>
+      <li>Validar o Top 10 de dores com 2–3 pessoas da operação.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="week">
+  <div class="week-head">
+    <div class="week-n">2</div>
+    <div><h3>Adoção de IA e Transformação Digital</h3><p>Escolher 2–3 pilotos de IA e definir a política mínima de uso responsável</p></div>
+  </div>
+  <div class="week-body">
+    <table>
+      <tr><th class="c">Bloco</th><th class="c">Duração</th><th>Conteúdo</th></tr>
+      <tr><td class="c">1</td><td class="c">0:20</td><td>Revisão do dever de casa: inventário de custos e censo de IA sombra.</td></tr>
+      <tr><td class="c">2</td><td class="c">0:50</td><td>Oficina de casos de uso: cruzar o Top 10 de dores com o que IA/automação resolve bem hoje (atendimento e triagem, documentos, leads, cobrança, análise de dados, apoio a código).</td></tr>
+      <tr><td class="c">3</td><td class="c">0:40</td><td>Filtro de viabilidade (dados, risco/LGPD, esforço, ganho) → selecionar <strong>2–3 pilotos</strong>.</td></tr>
+      <tr><td class="c">4</td><td class="c">0:40</td><td>Política de uso de IA em 1 página (versão PME do NIST AI RMF): permitido × proibido, revisão humana, dados pessoais, ferramentas aprovadas.</td></tr>
+      <tr><td class="c">5</td><td class="c">0:30</td><td>Desenho do piloto nº 1: responsável, ferramenta, processo-alvo, métrica de sucesso, prazo de 30 dias.</td></tr>
+    </table>
+  </div>
+  <div class="hw">
+    <div class="hw-title">Dever de casa · 2–4h</div>
+    <ul class="check">
+      <li>Iniciar o piloto nº 1 — mesmo em versão manual; o objetivo é o ciclo construir–medir–aprender (<strong>E. Ries</strong>, <em>The Lean Startup</em>, 2011).</li>
+      <li>Finalizar e comunicar a política de uso de IA à equipe.</li>
+      <li>Medir a linha de base do processo do piloto (custo em horas/semana hoje).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="week">
+  <div class="week-head">
+    <div class="week-n">3</div>
+    <div><h3>SDLC, fluxo de entrega e custos</h3><p>Organizar o fluxo de demandas e extrair as primeiras economias do inventário</p></div>
+  </div>
+  <div class="week-body">
+    <table>
+      <tr><th class="c">Bloco</th><th class="c">Duração</th><th>Conteúdo</th></tr>
+      <tr><td class="c">1</td><td class="c">0:20</td><td>Status do piloto de IA: o que funcionou, o que travou, ajuste de rota.</td></tr>
+      <tr><td class="c">2</td><td class="c">0:50</td><td>Fluxo de entrega atual (pedido → priorização → execução → validação → produção); filas, retrabalho e "entradas por fora". Fluxo-alvo: <strong>canal único + backlog priorizado + validação mínima + registro de mudanças</strong>.</td></tr>
+      <tr><td class="c">3</td><td class="c">0:30</td><td>Métricas mínimas (inspiradas nas 4 métricas <strong>DORA</strong>, adaptadas a PME): lead time, frequência de entregas, taxa de retrabalho/falha, tempo de recuperação. Escolher <strong>2</strong> para medir já.</td></tr>
+      <tr><td class="c">4</td><td class="c">0:50</td><td>Sessão de custos: inventário linha a linha → <span class="badge badge-danger">Cortar</span> <span class="badge badge-warn">Reduzir</span> <span class="badge badge-ok">Manter</span> <span class="badge badge-info">Investigar</span> + economia estimada em R$.</td></tr>
+      <tr><td class="c">5</td><td class="c">0:30</td><td>Quick wins de custo: 3–5 cortes/renegociações executáveis em 30 dias, com dono e prazo.</td></tr>
+    </table>
+  </div>
+  <div class="hw">
+    <div class="hw-title">Dever de casa · 2–4h</div>
+    <ul class="check">
+      <li>Implantar o canal único de demandas (a prática vale mais que a ferramenta).</li>
+      <li>Executar ao menos 1 quick win de custo (cancelamento ou renegociação).</li>
+      <li>Continuar o piloto de IA e registrar a métrica da semana.</li>
+      <li>Rascunhar sozinho a primeira versão do Plano 90 Dias — chegar à Sessão 4 com proposta, não com página em branco.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="week">
+  <div class="week-head">
+    <div class="week-n">4</div>
+    <div><h3>Consolidação e Plano de Ação 90 dias</h3><p>Transformar o levantamento em plano trimestral priorizado, com donos, prazos e métricas</p></div>
+  </div>
+  <div class="week-body">
+    <table>
+      <tr><th class="c">Bloco</th><th class="c">Duração</th><th>Conteúdo</th></tr>
+      <tr><td class="c">1</td><td class="c">0:30</td><td>Balanço do mês com números: piloto de IA, quick wins executados, fluxo implantado.</td></tr>
+      <tr><td class="c">2</td><td class="c">0:40</td><td>Consolidar o backlog completo de iniciativas — tudo o que surgiu nas 4 semanas, sem filtro.</td></tr>
+      <tr><td class="c">3</td><td class="c">0:50</td><td><strong>Priorização low-hanging fruit</strong> na matriz Impacto × Esforço (Seção 05).</td></tr>
+      <tr><td class="c">4</td><td class="c">0:40</td><td>Montar o Plano 30/60/90 (Seção 06): dono, métrica e critério de "feito" por iniciativa.</td></tr>
+      <tr><td class="c">5</td><td class="c">0:20</td><td>Ritual pós-programa: revisão mensal de 1h + reaplicação do questionário no dia 90. Encerramento e feedback.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<h2><span class="num">05</span> Priorização — "Low-Hanging Fruits"</h2>
+<p class="sec-lede">Cada iniciativa recebe <strong>Impacto (1–5)</strong> — tempo, dinheiro e risco, ancorados nos números das Semanas 1–3 — e <strong>Esforço (1–5)</strong> — horas, custo, dependências e mudança de comportamento. <strong>Prioridade = Impacto ÷ Esforço.</strong></p>
+
+<div class="axis"><span>← Menor esforço</span><span>Maior esforço →</span></div>
+<div class="matrix">
+  <div class="quad quad-hot">
+    <small>Alto impacto · Baixo esforço</small>
+    <h4>Fruta madura</h4>
+    <p>Fazer nos primeiros 30 dias. É o que gera confiança e financia o resto.</p>
+  </div>
+  <div class="quad">
+    <small>Alto impacto · Alto esforço</small>
+    <h4>Projeto</h4>
+    <p>Quebrar em fases; iniciar a fase 1 entre os dias 60 e 90.</p>
+  </div>
+  <div class="quad">
+    <small>Baixo impacto · Baixo esforço</small>
+    <h4>Arrumação</h4>
+    <p>Encaixar em horas ociosas, sem ocupar prioridade do trimestre.</p>
+  </div>
+  <div class="quad">
+    <small>Baixo impacto · Alto esforço</small>
+    <h4>Armadilha</h4>
+    <p>Não fazer — e registrar o "não". Dizer não também é estratégia.</p>
+  </div>
+</div>
+<div class="note"><strong>Regra prática:</strong> o plano de 90 dias não deve ter mais de <strong>8–10 iniciativas ativas</strong>. Conclusão gera confiança (as "vitórias de curto prazo" de Kotter), e confiança financia as mudanças maiores.</div>
+
+<!-- ================================================== -->
+<h2><span class="num">06</span> Plano de Ação — Próximos 90 dias</h2>
+<p class="sec-lede"><strong>Objetivo do trimestre (1 frase):</strong> <em class="fill">ex.: "Reduzir 15% do custo mensal de TI e liberar 20 h/semana da equipe via automação e IA, mantendo o risco sob controle."</em></p>
+
+<h3>Dias 1–30 · <span class="badge badge-brand">Frutas maduras</span></h3>
+<table>
+  <tr><th class="c">#</th><th>Iniciativa</th><th class="c">Pilar</th><th>Dono</th><th>Métrica de sucesso</th><th class="c">Prazo</th><th class="c">Status</th></tr>
+  <tr><td class="c">1</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+  <tr><td class="c">2</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+  <tr><td class="c">3</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+</table>
+
+<h3>Dias 31–60 · <span class="badge badge-info">Consolidação</span></h3>
+<table>
+  <tr><th class="c">#</th><th>Iniciativa</th><th class="c">Pilar</th><th>Dono</th><th>Métrica de sucesso</th><th class="c">Prazo</th><th class="c">Status</th></tr>
+  <tr><td class="c">4</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+  <tr><td class="c">5</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+  <tr><td class="c">6</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+</table>
+
+<h3>Dias 61–90 · <span class="badge badge-ok">Estruturação</span></h3>
+<table>
+  <tr><th class="c">#</th><th>Iniciativa</th><th class="c">Pilar</th><th>Dono</th><th>Métrica de sucesso</th><th class="c">Prazo</th><th class="c">Status</th></tr>
+  <tr><td class="c">7</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+  <tr><td class="c">8</td><td>&nbsp;</td><td class="c">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td><td class="c">☐</td></tr>
+</table>
+
+<h3>Painel de indicadores do trimestre</h3>
+<table>
+  <tr><th>Indicador</th><th class="c">Linha de base</th><th class="c">Meta 90 dias</th><th class="c">Resultado</th></tr>
+  <tr><td>Custo mensal total de TI (R$)</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td></tr>
+  <tr><td>Horas/semana economizadas com IA/automação</td><td class="c">0</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td></tr>
+  <tr><td>Lead time médio das demandas de TI</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td></tr>
+  <tr><td>Nota do questionário de maturidade (total)</td><td class="c">&nbsp;</td><td class="c">&nbsp;</td><td class="c">reaplicar no dia 90</td></tr>
+</table>
+
+<h3>Riscos e pendências</h3>
+<table>
+  <tr><th>Risco / pendência</th><th>Mitigação</th><th class="c">Dono</th></tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td></tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td><td class="c">&nbsp;</td></tr>
+</table>
+<div class="note"><strong>Ritual de acompanhamento:</strong> reunião mensal de 1h (revisar plano, marcar status, repriorizar) + reaplicação do questionário agendada para o dia 90.</div>
+
+<!-- ================================================== -->
+<h2><span class="num">07</span> Referências</h2>
+<ul>
+  <li><strong>Forsgren, N.; Humble, J.; Kim, G.</strong> — <em>Accelerate</em> (2018) + relatórios anuais DORA / Google Cloud.</li>
+  <li><strong>FinOps Foundation</strong> — FinOps Framework (finops.org).</li>
+  <li><strong>NIST</strong> — AI Risk Management Framework 1.0 (2023).</li>
+  <li><strong>Kotter, J.</strong> — <em>Leading Change</em> (1996).</li>
+  <li><strong>Westerman, G.; Bonnet, D.; McAfee, A.</strong> (MIT Sloan) — <em>Leading Digital</em> (2014).</li>
+  <li><strong>Ries, E.</strong> — <em>The Lean Startup</em> (2011).</li>
+  <li><strong>Sebrae</strong> — Índice de Maturidade Digital das PMEs brasileiras (2025).</li>
+  <li><strong>G4 Educação</strong> — pesquisa prioridade × uso estruturado de IA (2025).</li>
+</ul>
+
+<footer class="footer">
+  <div class="footer-l">
+    <span class="nav-mark">
+      <svg width="20" height="15.6" viewBox="0 0 100 78" fill="none" aria-hidden="true">
+        <path d="M40 4 L4 39 L40 74 L40 60 L18 39 L40 18 Z" fill="var(--brand)" />
+        <path d="M60 4 L96 39 L60 74 L60 60 L82 39 L60 18 Z" fill="var(--brand)" />
+      </svg>
+    </span>
+    <span class="nav-wordmark">MIRAH</span>
+    <span class="mono dim"> — CTO as a Service</span>
+  </div>
+  <div class="footer-r mono dim">© <span class="ph">⟨ANO⟩</span> Mirah Tech · Material de mentoria — adaptar livremente à realidade do cliente</div>
+</footer>
+
+</div>
+</body>
+</html>
